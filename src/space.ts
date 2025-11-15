@@ -1,5 +1,5 @@
-import type { TDimensions } from "./dimensions.ts";
-import { generateID } from "./encrypt.ts";
+import type { TDimensions } from "./plane.ts";
+import { smallID } from "./encrypt.ts";
 import { calculateVolume } from "./volume.ts";
 
 export type TSpace = TDimensions & {
@@ -12,10 +12,16 @@ export type TNewSpace = TDimensions;
 
 export function createSpace(newSpace: TNewSpace): TSpace {
   return {
-    id: generateID(),
-    x: newSpace.x,
-    y: newSpace.y,
-    z: newSpace.z,
-    volume: calculateVolume({ x: newSpace.x, y: newSpace.y, z: newSpace.z }),
+    id: smallID(),
+    l: newSpace.l,
+    w: newSpace.w,
+    h: newSpace.h,
+    unit: newSpace.unit,
+    volume: calculateVolume({
+      l: newSpace.l,
+      w: newSpace.w,
+      h: newSpace.h,
+      unit: newSpace.unit,
+    }),
   };
 }

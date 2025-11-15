@@ -13,6 +13,7 @@ NVM_BIN := /home/pnoulis/.nvm/versions/node/$(NODE_VVERSION)/bin
 NODE := $(NVM_BIN)/node
 TS := $(NVM_BIN)/tsc
 TSNODE := $(NVM_BIN)/ts-node
+TSX := $(NVM_BIN)/tsx
 ESBUILD := $(NVM_BIN)/esbuild
 PRETTIER := $(NVM_BIN)/prettier
 ESLINT := $(NVM_BIN)/eslint
@@ -22,6 +23,10 @@ SERVER := $(NVM_BIN)/http-server
 PHONY: all
 
 all: build
+
+.PHONY: tsx
+tsx:
+	$(TSX) src/test.ts
 
 PHONY: build
 build:

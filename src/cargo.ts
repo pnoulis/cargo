@@ -1,20 +1,14 @@
-import type { TDimensions } from "./dimensions.ts";
-import { generateID } from "./encrypt.ts";
+import type { TDimensions, TPosition } from "./plane.ts";
+import type { TLoad } from "./load.ts";
+import type { TSpace } from "./space.ts";
+import { smallID } from "./encrypt.ts";
 import { calculateVolume } from "./volume.ts";
+import { EUnit } from "./units.ts";
 
-export type TCargo = TDimensions & {
-  id: string | number;
-  volume: number;
+export type TCargo = {
+  load: TLoad[];
 };
 
-export type TNewCargo = TDimensions;
-
-export function createCargo(newCargo: TNewCargo): TCargo {
-  return {
-    id: generateID(),
-    x: newCargo.x,
-    y: newCargo.y,
-    z: newCargo.z,
-    volume: calculateVolume({ x: newCargo.x, y: newCargo.y, z: newCargo.z }),
-  };
+export function loadCargo(space: TSpace, load: TLoad[]): TCargo {
+  return {} as TCargo;
 }

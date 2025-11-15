@@ -11,6 +11,12 @@
   | micrometer | μm     | 0.000001 m      |
   | nanometer  | nm     | 0.000000001 m   |
 */
+
+export enum EUnit {
+  Meter = "m",
+  Centimeter = "cm",
+}
+
 export function m2cm(m: number): number {
   return m * 100;
 }

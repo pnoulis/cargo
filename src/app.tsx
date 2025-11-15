@@ -1,5 +1,3 @@
-import { loadCargo } from "./load.ts";
-import type { TSpace, TCargo } from "./load.ts";
 import { ReactDOMClient } from "react-dom/client";
 import IMG_DWIGHT from "../assets/best-favicon-in-the-www.png";
 
