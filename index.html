@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D BFD Cargo Loader</title>
+    <link rel="icon"  type="image/png"  href="./assets/best-favicon-in-the-www.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      #root {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "./dist/vendor.js",
+          "react-dom": "./dist/vendor.js",
+          "react-dom/client": "./dist/vendor.js",
+          "react/jsx-runtime": "./dist/vendor.js"
+        }
+      }
+    </script>
+    <script type="module" src="./dist/app.js"></script>
+  </body>
+</html>
