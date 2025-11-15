@@ -3,7 +3,6 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "target": "es2024",
-    "types": [],
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
@@ -20,12 +19,7 @@
     "moduleResolution": "nodenext",
     "rewriteRelativeImportExtensions": true,
     "esModuleInterop": true,
-    "baseUrl": "./src",
-    "paths": {
-     "@/*": [
-       "./*"
-     ],
-   }
+    "baseUrl": "./src"
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./src/vendor.ts", "node_modules"]
