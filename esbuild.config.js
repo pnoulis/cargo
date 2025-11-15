@@ -1,5 +1,6 @@
 import esbuild from "esbuild";
 import fs from "fs";
+import path from "path";
 
 const VENDOR_BUNDLE = "dist/vendor.js";
 
@@ -30,6 +31,42 @@ async function buildVendor() {
 // Build vendor first if needed
 await buildVendor();
 
+// Plugin to handle PNG imports
+const pngPlugin = {
+  name: "png-loader",
+  setup(build) {
+    build.onResolve({ filter: /\.png$/ }, (args) => {
+      let resolvedPath;
+
+      if (path.isAbsolute(args.path)) {
+        resolvedPath = args.path;
+      } else {
+        // Resolve relative to the importer's directory
+        resolvedPath = path.resolve(path.dirname(args.importer), args.path);
+      }
+
+      return {
+        path: resolvedPath,
+        namespace: "png-loader",
+      };
+    });
+
+    build.onLoad(
+      { filter: /\.png$/, namespace: "png-loader" },
+      async (args) => {
+        const data = await fs.promises.readFile(args.path);
+        const base64 = data.toString("base64");
+        const dataUrl = `data:image/png;base64,${base64}`;
+
+        return {
+          contents: `export default ${JSON.stringify(dataUrl)}`,
+          loader: "js",
+        };
+      },
+    );
+  },
+};
+
 // Build app
 await esbuild.build({
   entryPoints: ["src/load.ts", "src/app.tsx"],
@@ -42,7 +79,7 @@ await esbuild.build({
   jsx: "automatic",
   jsxImportSource: "react",
   sourcemap: true,
-  plugins: [],
+  plugins: [pngPlugin],
 });
 
 console.log("Build complete!");
