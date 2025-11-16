@@ -1,10 +1,9 @@
 import "./globals.ts";
-import type { TCargo } from "./cargo.ts";
+import { loadCargo } from "./cargo.ts";
 import type { TSpace } from "./space.ts";
 import { TLoad, createLoad } from "./load.ts";
 import { createSpace } from "./space.ts";
 import { m2cm, EUnit } from "./units.ts";
-import { EUnicode } from "./diagram.ts";
 
 const loads: TLoad[] = [
   createLoad({ l: 120, w: 80, h: 50, unit: EUnit.Centimeter }),
@@ -36,5 +35,4 @@ const spaces: TSpace[] = [
   }),
 ];
 
-log(loads);
-log(spaces);
+loadCargo(spaces[2], loads.slice(0, 1));

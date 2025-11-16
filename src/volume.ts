@@ -2,6 +2,7 @@ import type { TDimensions } from "./plane.ts";
 import { cm2m, EUnit } from "./units.ts";
 
 // Volume: M^3
+// V = L * W * H
 export function calculateVolume(dimensions: TDimensions): number {
   let volume;
 
@@ -16,5 +17,9 @@ export function calculateVolume(dimensions: TDimensions): number {
       throw new Error(`Unknown enum unit: ${dimensions.unit}`);
   }
 
+  return normalizeVolume(volume);
+}
+
+export function normalizeVolume(volume: number): number {
   return parseFloat(volume.toFixed(2));
 }
