@@ -1,55 +1,24 @@
-import type { TPosition, TPlane } from "./plane.ts";
-import { movePlane, space2plane, generateNegativePlanes } from "./plane.ts";
-import type { TLoad } from "./load.ts";
-import { rotateLoad } from "./load.ts";
-import type { TSpace } from "./space.ts";
+import { TCargo, TNewCargo, TSize } from "./types/index.ts";
+import { smallID } from "./utils/index.ts";
+import { calculateVolume, normalizeSize } from "./3d.ts";
+import { EOrientation } from "./enums/3d.ts";
 
-export type TCargo = {
-  load: TLoad[];
-};
+export function createCargo(newCargo: TNewCargo): TCargo {
+  const orientation = newCargo.orientation || EOrientation.Horizontal;
+  const size = normalizeSize(newCargo as TSize, orientation);
+  const volume = calculateVolume(size, newCargo.units);
 
-export type TPlacedLoad = TLoad &
-  TPosition & {
-    orientation: TPosition;
+  const cargo: TCargo = {
+    id: smallID(),
+    units: newCargo.units,
+    orientation,
+    priority: newCargo.priority || 0,
+    volume,
+    ...size,
+    x: 0,
+    y: 0,
+    z: 0,
   };
 
-export function loadCargo(space: TSpace, loads: TLoad[]): TCargo {
-  const loadDecreasingVolume = loads.toSorted((a, b) => b.volume - a.volume);
-
-  const planes = [space2plane(space)];
-
-  log(space);
-  for (const load of loadDecreasingVolume) {
-    log(load);
-    let candidatePlane: TPlane;
-    let acceptablePlanes: TPlane[] = [];
-
-    for (const plane of planes) {
-      log("add load to plane");
-      log(plane);
-
-      // The load must fit the available space.
-
-      // Try the longX orientation
-      candidatePlane = movePlane(plane, load);
-      if (candidatePlane.volume >= 0) {
-        log("candidate fits in the longX orientation");
-        acceptablePlanes.push(candidatePlane);
-      }
-
-      // Try the longY orientation
-      candidatePlane = movePlane(plane, rotateLoad(load));
-      if (candidatePlane.volume >= 0) {
-        log("candidate fits in the longY orientation");
-        acceptablePlanes.push(candidatePlane);
-      }
-    }
-    log(acceptablePlanes);
-
-    for (const plane of acceptablePlanes) {
-      log(generateNegativePlanes(space, plane));
-    }
-  }
-
-  return {} as TCargo;
+  return cargo;
 }

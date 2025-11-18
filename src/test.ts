@@ -1,38 +1,24 @@
 import "./globals.ts";
-import { loadCargo } from "./cargo.ts";
-import type { TSpace } from "./space.ts";
-import { TLoad, createLoad } from "./load.ts";
-import { createSpace } from "./space.ts";
-import { m2cm, EUnit } from "./units.ts";
+import { TCargo, TContainer } from "./types/index.ts";
+import { EUnit } from "./enums/index.ts";
+import { createCargo } from "./cargo.ts";
+import { createContainer } from "./container.ts";
+import { packCargo } from "./packed-container.ts";
+import { rotate } from "./3d.ts";
 
-const loads: TLoad[] = [
-  createLoad({ l: 120, w: 80, h: 50, unit: EUnit.Centimeter }),
-  createLoad({ l: 120, w: 100, h: 50, unit: EUnit.Centimeter }),
-  createLoad({ l: 160, w: 80, h: 50, unit: EUnit.Centimeter }),
-  createLoad({ l: 200, w: 120, h: 50, unit: EUnit.Centimeter }),
-  createLoad({ l: 220, w: 120, h: 50, unit: EUnit.Centimeter }),
-  createLoad({ l: 40, w: 40, h: 50, unit: EUnit.Centimeter }),
+
+
+debugger;
+const cargo: TCargo[] = [
+  createCargo({ l: 100, w: 50, h: 100, units: EUnit.Centimeter }),
+  createCargo({ l: 100, w: 50, h: 100, units: EUnit.Centimeter }),
+  createCargo({ l: 100, w: 50, h: 100, units: EUnit.Centimeter }),
 ];
 
-const spaces: TSpace[] = [
-  createSpace({
-    l: m2cm(13.6),
-    w: m2cm(2.4),
-    h: m2cm(2.75),
-    unit: EUnit.Centimeter,
-  }),
-  createSpace({
-    l: m2cm(8),
-    w: m2cm(2.4),
-    h: m2cm(2.8),
-    unit: EUnit.Centimeter,
-  }),
-  createSpace({
-    l: m2cm(7.1),
-    w: m2cm(2.4),
-    h: m2cm(2.8),
-    unit: EUnit.Centimeter,
-  }),
+
+const container: TContainer[] = [
+  createContainer({ l: 150, w: 100, h: 100, units: EUnit.Centimeter }),
 ];
 
-loadCargo(spaces[2], loads.slice(0, 1));
+const pack = packCargo(container[0], cargo);
+log(pack);

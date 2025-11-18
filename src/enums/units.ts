@@ -16,11 +16,3 @@ export enum EUnit {
   Meter = "m",
   Centimeter = "cm",
 }
-
-export function m2cm(m: number): number {
-  return m * 100;
-}
-
-export function cm2m(cm: number): number {
-  return cm / 100;
-}
