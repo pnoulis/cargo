@@ -25,7 +25,7 @@ all: build
 
 .PHONY: test
 test:
-	$(TSX) src/test.ts
+	$(TSX) ./src/test.ts
 
 .PHONY: debug
 debug:
@@ -35,10 +35,6 @@ debug:
 .PHONY: build
 build:
 	$(NODE) esbuild.config.js
-
-.PHONY: check
-check:
-	$(TS) --noEmit
 
 .PHONY: watch
 watch:
@@ -52,12 +48,16 @@ serve:
 hmr:
 	@echo TODO: hmr
 
+.PHONY: check
+check:
+	$(TS) --noEmit
+
 .PHONY: format
 format:
 	git diff --cached --name-only | while read -r file; do \
 		case "$$file" in \
 			*.json|*.js|*.ts|*.tsx|*.jsx|*.html) \
-				$(PRETTIER) --config prettier.config.js --write "$$file"; \
+				[[ -f "$$file" ]] && $(PRETTIER) --config prettier.config.js --write "$$file"; \
 		esac \
 	done
 
@@ -66,6 +66,6 @@ lint:
 	git diff --cached --name-only | while read -r file; do \
 		case "$$file" in \
 			*.js|*.ts|*.jsx|*.tsx) \
-					$(ESLINT) --config eslint.config.js "$$file" ;; \
+					[[ -f "$$file" ]] && $(ESLINT) --config eslint.config.js "$$file" ;; \
 		esac \
 	done
