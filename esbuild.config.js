@@ -69,7 +69,7 @@ const pngPlugin = {
 
 // Build app
 await esbuild.build({
-  entryPoints: ["src/load.ts", "src/app.tsx"],
+  entryPoints: ["src/test.ts", "src/app.tsx"],
   bundle: true,
   outdir: "dist",
   format: "esm",

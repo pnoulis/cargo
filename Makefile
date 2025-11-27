@@ -2,7 +2,7 @@
 
 SHELL := /usr/bin/bash
 .DEFAULT_GOAL: all
-.EXIT_ON_ERROR:
+.DELETE_ON_ERROR:
 
 SRCDIR_TOP := .
 SRCDIR := src
@@ -20,35 +20,39 @@ ESLINT := $(NVM_BIN)/eslint
 NODEMON := $(NVM_BIN)/nodemon
 SERVER := $(NVM_BIN)/http-server
 
-PHONY: all
-
+.PHONY: all
 all: build
 
-.PHONY: tsx
-tsx:
+.PHONY: test
+test:
 	$(TSX) src/test.ts
 
-PHONY: build
+.PHONY: debug
+debug:
+	$(NODE) --inspect-brk dist/test.js
+	make debug
+
+.PHONY: build
 build:
 	$(NODE) esbuild.config.js
 
-PHONY: check
+.PHONY: check
 check:
 	$(TS) --noEmit
 
-PHONY: watch
+.PHONY: watch
 watch:
-	$(NODEMON) --watch $(SRCDIR) -e ts,tsx,js,jsx --exec "make build; make hmr"
+	$(NODEMON) --watch $(SRCDIR) -e ts,tsx,js,jsx --exec "make build"
 
-PHONY: serve
+.PHONY: serve
 serve:
 	$(SERVER) --gzip -c -1
 
-PHONY: hmr # hot module reload lol...
+.PHONY: hmr # hot module reload lol...
 hmr:
 	@echo TODO: hmr
 
-PHONY: format
+.PHONY: format
 format:
 	git diff --cached --name-only | while read -r file; do \
 		case "$$file" in \
@@ -57,7 +61,7 @@ format:
 		esac \
 	done
 
-PHONY: lint
+.PHONY: lint
 lint:
 	git diff --cached --name-only | while read -r file; do \
 		case "$$file" in \
