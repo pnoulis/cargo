@@ -7,7 +7,7 @@ specifically tailored to [kolorado furniture factory](https://kolorado.bg/).
 
 ```sh
 $nvm install lts/krypton
-$npm install -g tsc ts-node esbuild prettier eslint nodemon http-server
+$npm install -g tsc tsx esbuild prettier eslint nodemon http-server
 $npm install
 ```
 
