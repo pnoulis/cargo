@@ -19,7 +19,11 @@
     "moduleResolution": "nodenext",
     "rewriteRelativeImportExtensions": true,
     "esModuleInterop": true,
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@meta/*": ["./src/meta/*"]
+    }
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./src/vendor.ts", "node_modules"]
