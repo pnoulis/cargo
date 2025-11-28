@@ -18,7 +18,7 @@ async function buildVendor() {
   if (isVendorBuilt()) return;
 
   await esbuild.build({
-    entryPoints: ["src/vendor.ts"],
+    entryPoints: ["src/meta/vendor.ts"],
     bundle: true,
     outdir: "dist",
     format: "esm",

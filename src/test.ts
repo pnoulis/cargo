@@ -1,4 +1,3 @@
-import "./utils/globals.ts";
 import { TCargo, createCargo } from "./cargo.ts";
 import { TContainer, createContainer, packContainer } from "./container.ts";
 import { EUnit } from "./utils/index.ts";
