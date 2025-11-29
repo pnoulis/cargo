@@ -2,7 +2,7 @@ import {
   normalizeDimensions,
   calculateVolume,
   TDimensions,
-  TPosition,
+  T3DCoordinates,
   TBody,
   createBoundingBox,
 } from "./geometry.ts";
@@ -13,13 +13,13 @@ import { loadFirstFitDecreasingCargo } from "./algorithms/first-fit.ts";
 export type TContainer = TBody & {
   id: string;
   maxWeight: number;
-  clearance: TPosition;
+  clearance: T3DCoordinates;
 };
 
 export type TNewContainer = TDimensions &
-  Partial<TPosition> & {
+  Partial<T3DCoordinates> & {
     id?: string;
-    clearance?: TPosition;
+    clearance?: T3DCoordinates;
     weight?: number;
     maxWeight?: number;
     unit: EUnit;

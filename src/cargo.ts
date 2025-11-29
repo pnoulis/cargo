@@ -3,7 +3,7 @@ import {
   calculateVolume,
   TDimensions,
   TBody,
-  TPosition,
+  T3DCoordinates,
 } from "./geometry.ts";
 import { smallID, EUnit } from "./utils/index.ts";
 
@@ -18,7 +18,7 @@ export type TCargo = TBody & {
 };
 
 export type TNewCargo = TDimensions &
-  Partial<TPosition> & {
+  Partial<T3DCoordinates> & {
     id?: string;
     priority?: number;
     orientation?: ECargoOrientation;

@@ -1,6 +1,11 @@
 import { EUnit, cm2m } from "./utils/index.ts";
 
-export type TPosition = {
+export type T2DCoordinates = {
+  x: number;
+  y: number;
+};
+
+export type T3DCoordinates = {
   x: number;
   y: number;
   z: number;
@@ -27,7 +32,7 @@ export type TOrientation = {
   yaw: number;
 };
 
-export type TBoundingBox = TPosition & TDimensions;
+export type TBoundingBox = T3DCoordinates & TDimensions;
 
 export type TBody = TBoundingBox &
   Partial<TOrientation> & {
