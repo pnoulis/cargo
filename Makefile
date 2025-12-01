@@ -36,13 +36,16 @@ debug:
 build:
 	$(NODE) esbuild.config.js
 
+scratch:
+	$(NODE) --import=./src/meta/globals.ts scratch.js
+
 .PHONY: watch
 watch:
-	$(NODEMON) --watch $(SRCDIR) -e ts,tsx,js,jsx --exec "make build"
+	$(NODEMON) --watch $(SRCDIR) -e ts,tsx,js,jsx,css --exec "make build"
 
 .PHONY: serve
 serve:
-	$(SERVER) --gzip -c -1
+	$(SERVER) --gzip -c-1
 
 .PHONY: hmr # hot module reload lol...
 hmr:

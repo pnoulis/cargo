@@ -1,0 +1,46 @@
+.unit-selector {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-neutral);
+}
+
+.unit-selector legend {
+  display: contents;
+  padding: 0;
+  margin: 0;
+}
+
+.unit-selector legend span {
+  white-space: nowrap;
+  padding-right: 10px;
+}
+
+.unit-selector-radio {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.unit-selector-radio input {
+  cursor: pointer;
+}
+
+.unit-selector-radio span {
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+.unit-selector-radio:hover span {
+  color: var(--color-primary);
+}
