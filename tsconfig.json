@@ -21,8 +21,8 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@meta/*": ["./src/meta/*"]
+      "@/*": ["./src/*.ts"],
+      "@meta/*": ["./src/meta/*.ts"]
     }
   },
   "include": ["./src/**/*.ts"],

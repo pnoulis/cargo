@@ -17,6 +17,12 @@ export type TDimensions = {
   h: number;
 };
 
+export enum EPosition {
+  top = 0,
+  side = 1,
+  front = 2,
+}
+
 export enum EAxis {
   x = "x",
   y = "y",

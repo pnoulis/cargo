@@ -4,3 +4,4 @@ package-lock.json
 .#*
 scratch.*
 *.log
+out.*

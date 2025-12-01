@@ -1,17 +1,19 @@
 import { TCargo, rotateCargo } from "../cargo.ts";
-import { TPack, fitsWithinPack } from "../container.ts";
+import { TPack, TPackedCargo, fitsWithinPack } from "../pack.ts";
 import {
   createBoundingBox,
   isColliding,
   isBound,
-  TBoundingBox,
+  EPosition,
 } from "../geometry.ts";
+import type { TOnCargoLoad } from "./onCargoLoad.ts";
 
 // https://en.wikipedia.org/wiki/First-fit_bin_packing
 
 export function loadFirstFitDecreasingCargo(
   pack: TPack,
   pendingCargo: TCargo[],
+  onLoad: TOnCargoLoad,
 ): TCargo[] {
   // https://en.wikipedia.org/wiki/First-fit-decreasing_bin_packing
   const sortedCargo = pendingCargo.toSorted((a, b) => b.volume - a.volume);
@@ -20,10 +22,15 @@ export function loadFirstFitDecreasingCargo(
     if (!fitsWithinPack(pack, sortedCargo[i])) continue;
     do {
       if (
-        tryLoading(pack, pack.loadedCargo[y], sortedCargo[i]) ||
-        tryLoading(pack, pack.loadedCargo[y], rotateCargo(sortedCargo[i]))
+        tryLoading(pack, pack.loadedCargo[y], sortedCargo[i], onLoad) ||
+        tryLoading(
+          pack,
+          pack.loadedCargo[y],
+          rotateCargo(sortedCargo[i]),
+          onLoad,
+        )
       ) {
-        pack.loadedCargo.push(sortedCargo[i]);
+        pack.loadedCargo.push(sortedCargo[i] as TPackedCargo);
         pack.remainderVolume -= sortedCargo[i].volume;
         pendingCargo.splice(
           pendingCargo.findIndex((cargo) => cargo.id === sortedCargo[i].id),
@@ -39,43 +46,47 @@ export function loadFirstFitDecreasingCargo(
 
 function tryLoading(
   pack: TPack,
-  anchor: TBoundingBox,
+  base: TPackedCargo,
   candidate: TCargo,
-): TCargo | null {
-  // Under normal conditions (no bugs or errors) the anchor will be undefined on the first
+  onLoad: TOnCargoLoad,
+): TPackedCargo | null {
+  // Under normal conditions (no bugs or errors) the base will be undefined on the first
   // cargo to be loaded. Therefore, the 1st cargo is to be placed at position:
-  // 0,0,0.
-  anchor ||= createBoundingBox();
+  // 0,0,0 and grid 0, column 0;
+  base ||= createBoundingBox() as TPackedCargo;
 
   // Try on the top
-  candidate.x = anchor.x;
-  candidate.y = anchor.y;
-  candidate.z = anchor.z + anchor.h;
+  candidate.x = base.x;
+  candidate.y = base.y;
+  candidate.z = base.z + base.h;
   if (
     isBound(pack.container, candidate) &&
     isPositionAvailable(pack.loadedCargo, candidate)
-  )
-    return candidate;
+  ) {
+    return onLoad(pack, base, candidate as TPackedCargo, EPosition.top);
+  }
 
   // Try on the side
-  candidate.x = anchor.x;
-  candidate.y = anchor.y + anchor.w;
-  candidate.z = anchor.z;
+  candidate.x = base.x;
+  candidate.y = base.y + base.w;
+  candidate.z = base.z;
   if (
     isBound(pack.container, candidate) &&
     isPositionAvailable(pack.loadedCargo, candidate)
-  )
-    return candidate;
+  ) {
+    return onLoad(pack, base, candidate as TPackedCargo, EPosition.side);
+  }
 
   // Try on the front
-  candidate.x = anchor.x + anchor.l;
-  candidate.y = anchor.y;
-  candidate.z = anchor.z;
+  candidate.x = base.x + base.l;
+  candidate.y = base.y;
+  candidate.z = base.z;
   if (
     isBound(pack.container, candidate) &&
     isPositionAvailable(pack.loadedCargo, candidate)
-  )
-    return candidate;
+  ) {
+    return onLoad(pack, base, candidate as TPackedCargo, EPosition.front);
+  }
 
   return null;
 }

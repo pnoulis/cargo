@@ -25,7 +25,7 @@ all: build
 
 .PHONY: test
 test:
-	$(TSX) ./src/test.ts
+	$(TSX) --import=./src/meta/globals.ts ./src/render.ts
 
 .PHONY: debug
 debug:

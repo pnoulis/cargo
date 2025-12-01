@@ -16,3 +16,13 @@ $npm install
 $make serve &
 $make watch &
 ```
+
+## Documentation
+
+### Optimization algorithms
+
+https://en.wikipedia.org/wiki/Bin_packing_problem
+
+### Rendering
+
+https://en.wikipedia.org/wiki/3D_projection

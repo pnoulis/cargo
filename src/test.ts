@@ -1,5 +1,6 @@
 import { TCargo, createCargo } from "./cargo.ts";
-import { TContainer, createContainer, packContainer } from "./container.ts";
+import { TContainer, createContainer } from "./container.ts";
+import { packContainer } from "./pack.ts";
 import { EUnit } from "./utils/index.ts";
 
 const cargo: TCargo[] = [
