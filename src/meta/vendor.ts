@@ -1,4 +1,6 @@
-export { default as React } from "react";
-export * as ReactDOM from "react-dom";
-export { default as ReactDOMClient } from "react-dom/client";
-export { jsx } from "react/jsx-runtime";
+import React from "react";
+import ReactDOM from "react-dom";
+import ReactDOMClient from "react-dom/client";
+import { jsx, jsxs } from "react/jsx-runtime";
+
+export { React, ReactDOM, ReactDOMClient, jsx, jsxs };
