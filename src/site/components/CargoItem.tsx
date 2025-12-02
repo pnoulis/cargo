@@ -9,10 +9,16 @@ import {
 } from "../utils/validation.ts";
 import { NumberInput } from "./NumberInput.tsx";
 import "./CargoItem.css";
+import { createCargo } from '@/cargo.ts';
 
 interface CargoItemProps {
   cargo: CargoInput;
 }
+
+export function CargoItem2() {
+    const [cargo, setCargo] = React.useState(() => createCargo())
+}
+
 
 export function CargoItem({ cargo }: CargoItemProps) {
   const { removeCargo, updateCargo, unit } = usePacking();

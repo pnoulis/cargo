@@ -71,18 +71,3 @@
   font-weight: 600;
   color: var(--color-neutral-400);
 }
-
-/* .container-form__input--error { */
-/*   border-color: var(--color-danger); */
-/* } */
-
-/* .container-form__input--error:focus { */
-/*   outline-color: var(--color-danger); */
-/*   border-color: var(--color-danger); */
-/* } */
-
-/* .container-form__error { */
-/*   font-size: var(--font-size-sm); */
-/*   color: var(--color-danger); */
-/*   margin-top: var(--spacing-xs); */
-/* } */

@@ -3,6 +3,7 @@ import { ReactDOMClient } from "react-dom/client";
 import "@meta/globals";
 import "./app.css";
 import { ContainerForm } from "./components/ContainerForm.tsx";
+import { CargoForm } from "./components/CargoForm.tsx";
 import { CargoList } from "./components/CargoList.tsx";
 import { PackingProvider } from "./context/PackingContext.tsx";
 /* import { ActionPanel } from "./components/ActionPanel.tsx"; */
@@ -19,7 +20,8 @@ function App() {
           <ContainerForm />
         </header>
         <section className="cargo-configurator">
-          <CargoList />
+          <CargoForm />
+          {/* <CargoList /> */}
         </section>
         <section className="pack-renderer"></section>
       </div>

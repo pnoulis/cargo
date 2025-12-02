@@ -1,12 +1,9 @@
 import { React } from "react";
-import { EUnit } from "@/utils/index.ts";
-import { usePacking } from "../context/PackingContext.tsx";
-import { validateDimension, validateWeight, parseContainerUpdate } from "../utils/validation.ts";
-import { NumberInput } from "./NumberInput.tsx";
 import "./ContainerForm.css";
+import { parseContainerUpdate } from "../utils/validation.ts";
+import { NumberInput } from "./NumberInput.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
-import { createCargo } from "@/cargo.ts";
-import { createContainer, TNewContainer } from "@/container.ts";
+import { createContainer } from "@/container.ts";
 import { Alert, useAlert } from "./Alert.tsx";
 
 export function ContainerForm() {
@@ -19,10 +16,10 @@ export function ContainerForm() {
     if (result.valid) {
       setErrors({ [name]: "" });
       setContainer({ ...container, [name]: result.value });
-      return;
+    } else {
+      setErrors({ [name]: result.error });
+      emitAlert(result.error);
     }
-    setErrors({ [name]: result.error });
-    emitAlert(result.error);
   }
 
   return (

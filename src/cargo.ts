@@ -27,6 +27,8 @@ export type TNewCargo = TDimensions &
   };
 
 export function createCargo(newCargo: TNewCargo): TCargo {
+  newCargo = { unit: EUnit.Centimeter, ...newCargo };
+
   return {
     id: newCargo.id || smallID(),
     unit: newCargo.unit,
