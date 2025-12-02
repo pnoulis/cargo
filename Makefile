@@ -37,7 +37,7 @@ build:
 	$(NODE) esbuild.config.js
 
 scratch:
-	$(NODE) --import=./src/meta/globals.ts scratch.js
+	$(TSX) --import=./src/meta/globals.ts scratch.ts
 
 .PHONY: watch
 watch:

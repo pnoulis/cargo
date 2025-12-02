@@ -103,9 +103,9 @@ export function isBound(a: TBoundingBox, b: TBoundingBox): boolean {
 
 export function normalizeDimensions(dimensions: TDimensions): TDimensions {
   return {
-    l: dimensions.l > dimensions.w ? dimensions.l : dimensions.w,
-    w: dimensions.l < dimensions.w ? dimensions.l : dimensions.w,
-    h: dimensions.h,
+    l: (dimensions.l > dimensions.w ? dimensions.l : dimensions.w) || 0,
+    w: (dimensions.l < dimensions.w ? dimensions.l : dimensions.w) || 0,
+    h: dimensions.h || 0,
   };
 }
 
@@ -125,7 +125,7 @@ export function calculateVolume(dimensions: TDimensions, unit: EUnit): number {
       throw new Error(`Unknown unit: ${unit}`);
   }
 
-  return normalizeVolume(volume);
+  return volume ? normalizeVolume(volume) : 0;
 }
 
 export function normalizeVolume(volume: number): number {

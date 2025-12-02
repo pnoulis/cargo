@@ -24,26 +24,32 @@ export type TNewCargo = TDimensions &
     orientation?: ECargoOrientation;
     weight?: number;
     unit: EUnit;
+    quantity?: number;
   };
 
 export function createCargo(newCargo: TNewCargo): TCargo {
-  newCargo = { unit: EUnit.Centimeter, ...newCargo };
+  newCargo = { unit: EUnit.Centimeter, quantity: 1, ...newCargo };
+  const cargo = [];
 
-  return {
-    id: newCargo.id || smallID(),
-    unit: newCargo.unit,
-    priority: newCargo.priority || 0,
-    volume: calculateVolume(newCargo, newCargo.unit),
-    weight: newCargo.weight || 0,
-    /* Constrain orientation to axis */
-    yaw: newCargo.orientation || ECargoOrientation.parallel,
-    /* Position */
-    x: newCargo.x || 0,
-    y: newCargo.y || 0,
-    z: newCargo.z || 0,
-    /* Dimensions (l,w,h) */
-    ...normalizeDimensions(newCargo),
-  };
+  while (newCargo.quantity-- > 0) {
+    cargo.push({
+      id: newCargo.id || smallID(),
+      unit: newCargo.unit,
+      priority: newCargo.priority || 0,
+      volume: calculateVolume(newCargo, newCargo.unit),
+      weight: newCargo.weight || 0,
+      /* Constrain orientation to axis */
+      yaw: newCargo.orientation || ECargoOrientation.parallel,
+      /* Position */
+      x: newCargo.x || 0,
+      y: newCargo.y || 0,
+      z: newCargo.z || 0,
+      /* Dimensions (l,w,h) */
+      ...normalizeDimensions(newCargo),
+    });
+  }
+
+  return cargo.length === 1 ? cargo.pop() : cargo;
 }
 
 export function rotateCargo(cargo: TCargo): TCargo {
