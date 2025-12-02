@@ -4,10 +4,13 @@ import { usePacking } from "../context/PackingContext.tsx";
 import "./UnitSelector.css";
 
 interface UnitSelectorProps {
+  name: string;
+  value?: EUnit;
+  onChange: (name: string, value: EUnit) => void;
   style: Record<string, any>;
 }
 
-export function UnitSelector({ style }: UnitSelectorProps) {
+export function UnitSelector({ name, value, onChange, style }: UnitSelectorProps) {
   const { unit, setUnit } = usePacking();
 
   return (
@@ -18,20 +21,20 @@ export function UnitSelector({ style }: UnitSelectorProps) {
       <label className="unit-selector-radio">
         <input
           type="radio"
-          name="unit"
+          name={name}
           value={EUnit.Centimeter}
-          checked={unit === EUnit.Centimeter}
-          onChange={(e) => setUnit(parseInt(e.target.value) as EUnit)}
+          checked={value === EUnit.Centimeter}
+          onChange={(e) => onChange(name, e.target.value)}
         />
         <span>cm</span>
       </label>
       <label className="unit-selector-radio">
         <input
           type="radio"
-          name="unit"
+          name={name}
           value={EUnit.Meter}
-          checked={unit === EUnit.Meter}
-          onChange={(e) => setUnit(parseInt(e.target.value) as EUnit)}
+          checked={value === EUnit.Meter}
+          onChange={(e) => onChange(name, e.target.value)}
         />
         <span>m</span>
       </label>

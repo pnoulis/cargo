@@ -101,7 +101,12 @@ export function CargoForm() {
             error={errors.quantity}
           />
         </div>
-        <UnitSelector style={{ gridColumn: 4, justifySelf: "end" }} />
+        <UnitSelector
+          name="unit"
+          value={cargo.unit}
+          onChange={updateCargo}
+          style={{ gridColumn: 4, justifySelf: "end" }}
+        />
         <button type="submit" className="cargo-form-submit" disabled={false}>
           Add Cargo
         </button>

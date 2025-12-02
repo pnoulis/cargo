@@ -77,7 +77,12 @@ export function ContainerForm() {
             error={errors.maxWeight}
           />
         </div>
-        <UnitSelector style={{ gridColumn: 3, justifySelf: "end" }} />
+        <UnitSelector
+          name="unit"
+          value={container.unit}
+          onChange={updateContainer}
+          style={{ gridColumn: 3, justifySelf: "end" }}
+        />
       </form>
     </>
   );
