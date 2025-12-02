@@ -1,7 +1,7 @@
 import { React } from "react";
 import { TCargo, TNewCargo, createCargo } from "@/cargo";
 import { TContainer, TNewContainer, createContainer } from "@/container";
-import { TPack, TNewPack, createPack } from "@/pack";
+import { TPack, TNewPack, createPack, packContainer } from "@/pack";
 
 export type TPackingContextType = {
   // State
@@ -19,18 +19,26 @@ export type TPackingContextType = {
 const PackingContext = React.createContext<TPackingContextType | null>(null);
 
 export function PackingProvider({ children }: { children: React.ReactNode }) {
-  const [container, setContainer] = React.useState(() => createContainer({ maxWeight: 1000 }));
   const [cargoItems, setCargoItems] = React.useState([]);
-  const [pack, setPack] = React.useState(() => createPack({ container }));
+  const [pack, setPack] = React.useState(null);
 
   function dispatchPackContainer(container: TNewContainer) {
-    setContainer();
+    log("dispatching pack container");
+    const cargo = [];
+    for (let i = 0; i < cargoItems.length; i++) {
+      if (cargoItems[i].quantity > 1) cargo.push(...createCargo(cargoItems[i]));
+      else cargo.push(createCargo(cargoItems[i]));
+    }
+    const packedContainer = packContainer(createContainer(container), cargo);
+    setPack(packedContainer);
+    window.history.pushState({}, "", `./?pack=${packedContainer.id}`);
+    window.dispatchEvent(new CustomEvent("pushstate"));
   }
+
   function dispatchAddCargoItem(cargo: TNewCargo) {}
 
   const value: TPackingContextType = {
     /* State */
-    container,
     cargoItems,
     pack,
 

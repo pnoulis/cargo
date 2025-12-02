@@ -6,6 +6,7 @@ import { UnitSelector } from "./UnitSelector.tsx";
 import { createContainer } from "@/container.ts";
 import { Alert, useAlert } from "./Alert.tsx";
 import { usePacking } from "../context/PackingContext.tsx";
+import { Button } from "./Button.tsx";
 
 export function ContainerForm() {
   const [container, setContainer] = React.useState(() => createContainer({ maxWeight: 1000 }));
@@ -34,10 +35,15 @@ export function ContainerForm() {
     }
   }
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
+    dispatchPackContainer(container);
+  }
+
   return (
     <>
       <Alert {...alert} />
-      <form className="container-form">
+      <form className="container-form" onSubmit={handleSubmit}>
         <div className="container-form-field name-input">
           <input type="text" name="name" placeholder="Container name" />
         </div>
@@ -95,9 +101,9 @@ export function ContainerForm() {
           onChange={updateContainer}
           style={{ gridColumn: 3, justifySelf: "end" }}
         />
-        <button type="submit" className="container-form-submit" disabled={!allowSubmit}>
+        <Button className="container-form-submit" type="submit" disabled={!allowSubmit}>
           Pack Container
-        </button>
+        </Button>
       </form>
     </>
   );

@@ -5,6 +5,7 @@ import { NumberInput } from "./NumberInput.tsx";
 import { createCargo } from "@/cargo";
 import { Alert, useAlert } from "./Alert.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
+import { Button } from "./Button.tsx";
 
 export function CargoForm() {
   const [cargo, setCargo] = React.useState(() => createCargo());
@@ -32,10 +33,15 @@ export function CargoForm() {
     }
   }
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    log(e);
+    e.preventDefault();
+  }
+
   return (
     <>
       <Alert {...alert} />
-      <form className="cargo-form">
+      <form className="cargo-form" onSubmit={handleSubmit}>
         <div className="cargo-form-field name-input">
           <input type="text" name="name" placeholder="Add Cargo item" />
         </div>
@@ -117,9 +123,9 @@ export function CargoForm() {
           onChange={updateCargo}
           style={{ gridColumn: 4, justifySelf: "end" }}
         />
-        <button type="submit" className="cargo-form-submit" disabled={!allowSubmit}>
+        <Button className="cargo-form-submit" type="submit" disabled={!allowSubmit}>
           Add Cargo
-        </button>
+        </Button>
       </form>
     </>
   );

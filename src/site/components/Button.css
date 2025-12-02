@@ -1,0 +1,26 @@
+.button {
+  height: var(--button-height);
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.button:active:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
