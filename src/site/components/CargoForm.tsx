@@ -9,15 +9,25 @@ import { UnitSelector } from "./UnitSelector.tsx";
 export function CargoForm() {
   const [cargo, setCargo] = React.useState(() => createCargo());
   const [errors, setErrors] = React.useState({});
+  const [allowSubmit, setAllowSubmit] = React.useState(false);
   const { emitAlert, alert } = useAlert();
 
   function updateCargo(name: string, value: unknown): void {
     const result = parseCargoUpdate(name, value);
+    let nextErr = errors;
+    let nextCargo = cargo;
+
     if (result.valid) {
-      setErrors({ [name]: "" });
-      setCargo({ ...cargo, [name]: result.value });
+      nextErr[name] = "";
+      nextCargo[name] = result.value;
+      setErrors({ ...nextErr });
+      setCargo({ ...nextCargo });
+      if (Object.values(nextErr).join("")) setAllowSubmit(false);
+      else if (nextCargo.l && nextCargo.w && nextCargo.h) setAllowSubmit(true);
     } else {
-      setErrors({ [name]: result.error });
+      nextErr[name] = result.error;
+      setAllowSubmit(false);
+      setErrors({ ...nextErr });
       emitAlert(result.error);
     }
   }
@@ -107,7 +117,7 @@ export function CargoForm() {
           onChange={updateCargo}
           style={{ gridColumn: 4, justifySelf: "end" }}
         />
-        <button type="submit" className="cargo-form-submit" disabled={false}>
+        <button type="submit" className="cargo-form-submit" disabled={!allowSubmit}>
           Add Cargo
         </button>
       </form>

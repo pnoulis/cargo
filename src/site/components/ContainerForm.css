@@ -76,3 +76,34 @@
   font-weight: 600;
   color: var(--color-neutral-400);
 }
+
+.container-form-submit {
+  grid-column: 3;
+  grid-row: 3;
+  justify-self: end;
+  height: var(--button-height);
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  align-self: flex-end;
+}
+
+.container-form-submit:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.container-form-submit:active:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.container-form-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

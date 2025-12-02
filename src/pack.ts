@@ -53,6 +53,7 @@ export type TNewPack = {
 };
 
 export function createPack(newPack: TNewPack): TPack {
+  newPack = { container: {}, ...newPack };
   return {
     id: newPack.id || smallID(),
     container: newPack.container,
@@ -172,12 +173,9 @@ export function handleCargoLoad(
   }
 
   // Expand the Grid to equal the sum of its Cargo in all axis
-  if (candidate.x + candidate.l > grid.l)
-    grid.l += Math.abs(grid.l - candidate.l);
-  if (candidate.y + candidate.w > grid.w)
-    grid.w += Math.abs(grid.w - candidate.w);
-  if (candidate.z + candidate.h > grid.h)
-    grid.h += Math.abs(grid.h - candidate.h);
+  if (candidate.x + candidate.l > grid.l) grid.l += Math.abs(grid.l - candidate.l);
+  if (candidate.y + candidate.w > grid.w) grid.w += Math.abs(grid.w - candidate.w);
+  if (candidate.z + candidate.h > grid.h) grid.h += Math.abs(grid.h - candidate.h);
 
   // Compute usefull statistics
   if (candidate.l > pack.maxCargoL) pack.maxCargoL = candidate.l;

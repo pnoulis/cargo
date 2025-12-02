@@ -5,19 +5,31 @@ import { NumberInput } from "./NumberInput.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
 import { createContainer } from "@/container.ts";
 import { Alert, useAlert } from "./Alert.tsx";
+import { usePacking } from "../context/PackingContext.tsx";
 
 export function ContainerForm() {
   const [container, setContainer] = React.useState(() => createContainer({ maxWeight: 1000 }));
   const [errors, setErrors] = React.useState({});
+  const [allowSubmit, setAllowSubmit] = React.useState(false);
+  const { dispatchPackContainer } = usePacking();
   const { emitAlert, alert } = useAlert();
 
   function updateContainer(name: string, value: unknown): void {
     const result = parseContainerUpdate(name, value);
+    let nextErr = errors;
+    let nextContainer = container;
+
     if (result.valid) {
-      setErrors({ [name]: "" });
-      setContainer({ ...container, [name]: result.value });
+      nextErr[name] = "";
+      nextContainer[name] = result.value;
+      setErrors({ ...nextErr });
+      setContainer({ ...nextContainer });
+      if (Object.values(nextErr).join("")) setAllowSubmit(false);
+      else if (nextContainer.l && nextContainer.w && nextContainer.h) setAllowSubmit(true);
     } else {
-      setErrors({ [name]: result.error });
+      nextErr[name] = result.error;
+      setAllowSubmit(false);
+      setErrors({ ...nextErr });
       emitAlert(result.error);
     }
   }
@@ -83,6 +95,9 @@ export function ContainerForm() {
           onChange={updateContainer}
           style={{ gridColumn: 3, justifySelf: "end" }}
         />
+        <button type="submit" className="container-form-submit" disabled={!allowSubmit}>
+          Pack Container
+        </button>
       </form>
     </>
   );

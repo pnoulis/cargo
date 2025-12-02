@@ -61,6 +61,7 @@
 
 /* Cargo Quantity */
 .cargo-form-field:nth-of-type(7) {
+    justify-self: end;
     grid-column: 3;
     grid-row: 3;
 }
@@ -92,6 +93,7 @@
 .cargo-form-submit {
   grid-column: 4;
   grid-row: 3;
+  justify-self: end;
   height: var(--button-height);
   padding: 0 var(--spacing-lg);
   background-color: var(--color-primary);
