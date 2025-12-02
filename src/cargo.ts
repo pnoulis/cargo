@@ -14,12 +14,14 @@ export enum ECargoOrientation {
 
 export type TCargo = TBody & {
   id: string;
+  name?: string;
   priority: number;
 };
 
 export type TNewCargo = TDimensions &
   Partial<T3DCoordinates> & {
     id?: string;
+    name?: string;
     priority?: number;
     orientation?: ECargoOrientation;
     weight?: number;
@@ -34,6 +36,7 @@ export function createCargo(newCargo: TNewCargo): TCargo {
   while (newCargo.quantity-- > 0) {
     cargo.push({
       id: newCargo.id || smallID(),
+      name: newCargo.name,
       unit: newCargo.unit,
       priority: newCargo.priority || 0,
       volume: calculateVolume(newCargo, newCargo.unit),

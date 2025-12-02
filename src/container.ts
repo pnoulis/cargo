@@ -9,6 +9,7 @@ import { smallID, EUnit } from "./utils/index.ts";
 
 export type TContainer = TBody & {
   id: string;
+  name?: string;
   maxWeight: number;
   clearance: T3DCoordinates;
 };
@@ -16,6 +17,7 @@ export type TContainer = TBody & {
 export type TNewContainer = TDimensions &
   Partial<T3DCoordinates> & {
     id?: string;
+    name?: string;
     clearance?: T3DCoordinates;
     weight?: number;
     maxWeight?: number;
@@ -27,6 +29,7 @@ export function createContainer(newContainer: TNewContainer): TContainer {
 
   return {
     id: newContainer.id || smallID(),
+    name: newContainer.name,
     unit: newContainer.unit,
     volume: calculateVolume(newContainer, newContainer.unit),
     weight: newContainer.weight || 0,

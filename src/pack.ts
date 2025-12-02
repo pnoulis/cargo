@@ -33,6 +33,7 @@ export type TPackedCargo = TCargo & {
 
 export type TPack = {
   id: string;
+  name?: string;
   container: TContainer;
   remainderVolume: number;
   pendingCargo: TCargo[];
@@ -48,6 +49,7 @@ export type TPack = {
 
 export type TNewPack = {
   id?: string;
+  name?: string;
   container: TContainer;
   cargo?: TCargo[];
 };
@@ -56,6 +58,7 @@ export function createPack(newPack: TNewPack): TPack {
   newPack = { container: {}, ...newPack };
   return {
     id: newPack.id || smallID(),
+    name: newPack.name,
     container: newPack.container,
     remainderVolume: newPack.container.volume,
     pendingCargo: newPack.cargo || [],
