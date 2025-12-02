@@ -23,6 +23,8 @@ export type TNewContainer = TDimensions &
   };
 
 export function createContainer(newContainer: TNewContainer): TContainer {
+  newContainer = { unit: EUnit.Centimeter, ...newContainer };
+
   return {
     id: newContainer.id || smallID(),
     unit: newContainer.unit,

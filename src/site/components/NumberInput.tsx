@@ -2,9 +2,9 @@ import { React } from "react";
 import "./NumberInput.css";
 
 interface NumberInputProps {
+  name: string;
   value: string | number;
-  onChange: (value: string) => void;
-  onBlur?: () => void;
+  onChange: (name: string, value: string) => void;
   placeholder?: string;
   step?: string;
   min?: string;
@@ -14,52 +14,43 @@ interface NumberInputProps {
 }
 
 export function NumberInput({
+  name,
   value,
   onChange,
-  onBlur,
   placeholder,
-  step = "1",
+  step = "1.0",
   min = "0",
   disabled = false,
   error = false,
   className = "",
 }: NumberInputProps) {
-  const numValue = typeof value === "string" ? (value ? parseFloat(value) : "") : value;
-  const stepValue = parseFloat(step);
+  function handleIncrement() {
+    value ||= 0;
+    if (typeof value !== "number") throw new Error(`Invalid argument: ${value}`);
+    onChange(name, value + parseFloat(step));
+  }
 
-  const handleIncrement = () => {
-    if (typeof numValue === "number") {
-      const newValue = numValue + stepValue;
-      onChange(newValue.toString());
-    } else if (numValue === "") {
-      onChange(stepValue.toString());
-    }
-  };
-
-  const handleDecrement = () => {
-    if (typeof numValue === "number") {
-      const minNum = parseFloat(min);
-      const newValue = Math.max(minNum, numValue - stepValue);
-      onChange(newValue.toString());
-    }
-  };
+  function handleDecrement() {
+    value ||= 0;
+    if (typeof value !== "number") throw new Error(`Invalid argument: ${value}`);
+    return onChange(name, Math.max(min, value - parseFloat(step)));
+  }
 
   return (
-    <div className={`number-input ${error ? "number-input-field-error" : ""} ${className}`}>
+    <div className={`number-input ${error ? "error" : ""} ${className}`}>
       <input
-        type="text"
+        name={name}
+        value={value || ""}
+        type="number"
         inputMode="decimal"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onBlur={onBlur}
+        onChange={(e) => onChange(name, e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        className="number-input-value"
       />
       <div className="number-input-controls">
-        <button
+          <button
           type="button"
-          className="number-input-btn up"
+          className="number-input-btn"
           onClick={handleIncrement}
           disabled={disabled}
           aria-label="Increase value"
@@ -68,7 +59,7 @@ export function NumberInput({
         </button>
         <button
           type="button"
-          className="number-input-btn down"
+          className="number-input-btn"
           onClick={handleDecrement}
           disabled={disabled}
           aria-label="Decrease value"

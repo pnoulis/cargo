@@ -2,6 +2,15 @@
  * Validation helper functions for forms
  */
 
+type TValidationResult = {
+  valid: boolean;
+  error?: string;
+};
+
+type TParseResult = TValidationResult & {
+  value: unknown;
+};
+
 export function isPositiveNumber(value: string | number): boolean {
   const num = typeof value === "string" ? parseFloat(value) : value;
   return !isNaN(num) && num > 0;
@@ -17,10 +26,7 @@ export function isInRange(value: string | number, min: number, max: number): boo
   return !isNaN(num) && num >= min && num <= max;
 }
 
-export function validateDimension(value: string | number): {
-  valid: boolean;
-  error?: string;
-} {
+export function validateDimension(value: string | number): TValidationResult {
   if (!value) {
     return { valid: false, error: "Required" };
   }
@@ -42,10 +48,7 @@ export function validateDimension(value: string | number): {
   return { valid: true };
 }
 
-export function validateWeight(value: string | number | undefined): {
-  valid: boolean;
-  error?: string;
-} {
+export function validateWeight(value: string | number | undefined): TValidationResult {
   if (!value) {
     return { valid: true }; // Optional field
   }
@@ -67,10 +70,7 @@ export function validateWeight(value: string | number | undefined): {
   return { valid: true };
 }
 
-export function validatePriority(value: string | number | undefined): {
-  valid: boolean;
-  error?: string;
-} {
+export function validatePriority(value: string | number | undefined): TValidationResult {
   if (!value) {
     return { valid: true }; // Optional field
   }
@@ -92,10 +92,7 @@ export function validatePriority(value: string | number | undefined): {
   return { valid: true };
 }
 
-export function validateQuantity(value: string | number | undefined): {
-  valid: boolean;
-  error?: string;
-} {
+export function validateQuantity(value: string | number | undefined): TValidationResult {
   if (!value) {
     return { valid: true }; // Optional field, defaults to 1
   }
@@ -120,3 +117,39 @@ export function validateQuantity(value: string | number | undefined): {
 
   return { valid: true };
 }
+
+function round3(value: number) {
+  return Math.round(value * 1000) / 1000;
+}
+
+export function parseContainerUpdate(name: string, value: unknown): TParseResult {
+  let parsed;
+
+  switch (name) {
+    case "l":
+      parsed = round3(parseFloat(value));
+      if (!parsed) return { valid: true, value: 0 };
+      return { ...validateDimension(parsed), value: parsed };
+    case "w":
+      parsed = round3(parseFloat(value));
+      if (!parsed) return { valid: true, value: 0 };
+      return { ...validateDimension(parsed), value: parsed };
+    case "h":
+      parsed = round3(parseFloat(value));
+      if (!parsed) return { valid: true, value: 0 };
+      return { ...validateDimension(parsed), value: parsed };
+    case "maxWeight":
+      parsed = round3(parseFloat(value));
+      if (!parsed) return { valid: true, value: 0 };
+      return { ...validateWeight(parsed), value: parsed };
+    case "weight":
+      parsed = round3(parseFloat(value));
+      if (!parsed) return { valid: true, value: 0 };
+      return { ...validateWeight(parsed), value: parsed };
+    case "clearance":
+    default:
+      throw new Error(`Trying to update unknown property: ${name}`);
+  }
+}
+
+export function validateCargo(name: string, value: unknown): TValidationResult {}

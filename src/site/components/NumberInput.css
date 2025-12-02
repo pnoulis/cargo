@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-.number-input-value {
+.number-input > input {
   width: 100%;
   max-width: 70px;
   height: var(--input-height);
@@ -17,21 +17,21 @@
   color: var(--color-neutral-900);
 }
 
-.number-input-value:hover {
+.number-input > input:hover {
   border-color: var(--color-neutral-400);
 }
 
-.number-input-value:focus {
+.number-input > input:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
-.number-input-error .number-input {
+.number-input.error > input {
   border-color: var(--color-danger);
 }
 
-.number-input-error .number-input:focus {
+.number-input.error > input:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
@@ -64,15 +64,6 @@
   align-items: center;
   justify-content: center;
   user-select: none;
-}
-
-.number-input-btn up {
-  border-bottom: none;
-  border-radius: 0 var(--border-radius) 0 0;
-}
-
-.number-input-btn down {
-  border-radius: 0 0 var(--border-radius) 0;
 }
 
 .number-input-btn:hover:not(:disabled) {

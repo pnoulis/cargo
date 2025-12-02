@@ -2,7 +2,7 @@ import { React } from "react";
 import { ReactDOMClient } from "react-dom/client";
 import "@meta/globals";
 import "./app.css";
-import { PackForm, ContainerForm } from "./components/ContainerForm.tsx";
+import { ContainerForm } from "./components/ContainerForm.tsx";
 import { CargoList } from "./components/CargoList.tsx";
 import { PackingProvider } from "./context/PackingContext.tsx";
 /* import { ActionPanel } from "./components/ActionPanel.tsx"; */
@@ -16,7 +16,7 @@ function App() {
     <PackingProvider>
       <div className="pack-dashboard">
         <header className="pack-configurator">
-          <PackForm />
+          <ContainerForm />
         </header>
         <section className="cargo-configurator">
           <CargoList />
