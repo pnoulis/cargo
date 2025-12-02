@@ -25,6 +25,7 @@ export function UnitSelector({ name, value, onChange, style }: UnitSelectorProps
           value={EUnit.Centimeter}
           checked={value === EUnit.Centimeter}
           onChange={(e) => onChange(name, e.target.value)}
+          tabIndex="0"
         />
         <span>cm</span>
       </label>
@@ -35,6 +36,7 @@ export function UnitSelector({ name, value, onChange, style }: UnitSelectorProps
           value={EUnit.Meter}
           checked={value === EUnit.Meter}
           onChange={(e) => onChange(name, e.target.value)}
+          tabIndex="0"
         />
         <span>m</span>
       </label>

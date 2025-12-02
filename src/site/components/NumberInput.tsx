@@ -48,12 +48,13 @@ export function NumberInput({
         disabled={disabled}
       />
       <div className="number-input-controls">
-          <button
+        <button
           type="button"
           className="number-input-btn"
           onClick={handleIncrement}
           disabled={disabled}
           aria-label="Increase value"
+          tabIndex="-1"
         >
           ▲
         </button>
@@ -63,6 +64,7 @@ export function NumberInput({
           onClick={handleDecrement}
           disabled={disabled}
           aria-label="Decrease value"
+          tabIndex="-1"
         >
           ▼
         </button>
