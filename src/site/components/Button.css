@@ -18,6 +18,12 @@
 
 .button:active:not(:disabled) {
   background-color: #1e40af;
+  outline: none;
+}
+
+.button:focus:not(:disabled) {
+  background-color: #1e40af;
+  outline: none;
 }
 
 .button:disabled {
