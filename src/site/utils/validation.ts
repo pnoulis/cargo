@@ -115,7 +115,7 @@ function round3(value: number) {
 }
 
 export function parseContainerUpdate(name: string, value: unknown): TParseResult {
-  let parsed;
+  let result, parsed;
 
   switch (name) {
     case "l":
@@ -127,9 +127,12 @@ export function parseContainerUpdate(name: string, value: unknown): TParseResult
       if (!parsed) return { valid: true, value: 0 };
       return { ...validateDimension(parsed), value: parsed };
     case "h":
-      parsed = round3(parseFloat(value));
-      if (!parsed) return { valid: true, value: 0 };
-      return { ...validateDimension(parsed), value: parsed };
+      if (!value) return { valid: true, value: 0 };
+      result = validateDimension(value);
+      if (result.valid) {
+        value = round3(parseFloat(value));
+      }
+      return { ...result, value: parsed || value };
     case "maxWeight":
       parsed = round3(parseFloat(value));
       if (!parsed) return { valid: true, value: 0 };

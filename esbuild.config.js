@@ -51,25 +51,22 @@ const pngPlugin = {
       };
     });
 
-    build.onLoad(
-      { filter: /\.png$/, namespace: "png-loader" },
-      async (args) => {
-        const data = await fs.promises.readFile(args.path);
-        const base64 = data.toString("base64");
-        const dataUrl = `data:image/png;base64,${base64}`;
+    build.onLoad({ filter: /\.png$/, namespace: "png-loader" }, async (args) => {
+      const data = await fs.promises.readFile(args.path);
+      const base64 = data.toString("base64");
+      const dataUrl = `data:image/png;base64,${base64}`;
 
-        return {
-          contents: `export default ${JSON.stringify(dataUrl)}`,
-          loader: "js",
-        };
-      },
-    );
+      return {
+        contents: `export default ${JSON.stringify(dataUrl)}`,
+        loader: "js",
+      };
+    });
   },
 };
 
 // Build app
 await esbuild.build({
-  entryPoints: ["src/test.ts", "src/site/app.tsx"],
+  entryPoints: ["src/test.ts", "src/site/App.tsx"],
   bundle: true,
   outdir: "dist",
   format: "esm",

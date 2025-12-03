@@ -1,0 +1,27 @@
+.cargo-loader {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: var(--spacing-lg);
+}
+
+.container-configurator {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.cargo-configurator {
+  grid-column: 1;
+  grid-row: 2;
+  overflow: auto;
+  min-height: 0;
+}
+
+.pack-renderer {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  overflow: auto;
+  min-height: 0;
+}

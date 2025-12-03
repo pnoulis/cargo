@@ -9,10 +9,12 @@ import { usePacking } from "../context/PackingContext.tsx";
 import { Button } from "./Button.tsx";
 
 export function ContainerForm() {
-  const [container, setContainer] = React.useState(() => createContainer({ maxWeight: 1000 }));
   const [errors, setErrors] = React.useState({});
-  const [allowSubmit, setAllowSubmit] = React.useState(false);
-  const { dispatchPackContainer } = usePacking();
+  const { pack, dispatchPackContainer } = usePacking();
+  const [container, setContainer] = React.useState(() =>
+    pack?.container ? { ...pack?.container } : createContainer({ maxWeight: 1000 }),
+  );
+  const [allowSubmit, setAllowSubmit] = React.useState(pack?.container);
   const { emitAlert, alert } = useAlert();
 
   function updateContainer(name: string, value: unknown): void {

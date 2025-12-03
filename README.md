@@ -26,3 +26,9 @@ https://en.wikipedia.org/wiki/Bin_packing_problem
 ### Rendering
 
 https://en.wikipedia.org/wiki/3D_projection
+
+## TODO
+
+### Validation
+
+Test against regular expressions, then parse value.

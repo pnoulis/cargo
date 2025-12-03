@@ -8,12 +8,18 @@ export type TPackingContextType = {
   container: TContainer;
   cargoItems: TNewCargo[];
   pack: TPack;
-  isPacking: boolean;
   error: string | null;
+  isPacking: boolean;
+  isEditing: boolean;
 
   // Actions
   dispatchPackContainer: (container: TNewContainer) => void;
   dispatchAddCargoItem: (cargo: TNewCargo) => void;
+  resetAll: () => void;
+  editContainer: () => void;
+  exportPack: () => void;
+  setIsPacking: () => void;
+  setIsEditing: () => void;
 };
 
 const PackingContext = React.createContext<TPackingContextType | null>(null);
@@ -21,6 +27,8 @@ const PackingContext = React.createContext<TPackingContextType | null>(null);
 export function PackingProvider({ children }: { children: React.ReactNode }) {
   const [cargoItems, setCargoItems] = React.useState([]);
   const [pack, setPack] = React.useState(null);
+  const [isPacking, setIsPacking] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(true);
 
   function dispatchPackContainer(container: TNewContainer) {
     log("dispatching pack container");
@@ -31,20 +39,39 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     }
     const packedContainer = packContainer(createContainer(container), cargo);
     setPack(packedContainer);
-    window.history.pushState({}, "", `./?pack=${packedContainer.id}`);
-    window.dispatchEvent(new CustomEvent("pushstate"));
+    setIsEditing(false);
   }
 
   function dispatchAddCargoItem(cargo: TNewCargo) {}
+
+  function resetAll() {
+    setCargoItems([]);
+    setPack(null);
+    setIsPacking(false);
+    setIsEditing(true);
+  }
+
+  function editContainer() {
+    setIsEditing(true);
+  }
+
+  function exportPack() {}
 
   const value: TPackingContextType = {
     /* State */
     cargoItems,
     pack,
+    isPacking,
+    isEditing,
 
     /* Actions */
     dispatchPackContainer,
     dispatchAddCargoItem,
+    resetAll,
+    editContainer,
+    exportPack,
+    setIsPacking,
+    setIsEditing,
   };
 
   return <PackingContext.Provider value={value}>{children}</PackingContext.Provider>;
