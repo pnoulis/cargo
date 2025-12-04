@@ -5,6 +5,7 @@ import { CargoForm } from "./components/CargoForm.tsx";
 import { PackController } from "./components/PackController.tsx";
 import { usePacking, PackingProvider } from "./context/PackingContext.tsx";
 import { ResultsDisplay } from "./components/ResultsDisplay.tsx";
+import { CargoList } from "./components/CargoList.tsx";
 
 export function CargoLoaderPage() {
   return (
@@ -18,14 +19,17 @@ function CargoLoader() {
   const { isEditing } = usePacking();
 
   return (
-    <main className="cargo-loader">
-      <header className="container-configurator">
+    <main className="layout-cargo-loader">
+      <header className="layout-container-configurator">
         {isEditing ? <ContainerForm /> : <PackController />}
       </header>
-      <section className="cargo-configurator">
+      <section className="layout-cargo-configurator">
         <CargoForm />
       </section>
-      <section className="pack-renderer">
+      <section className="layout-cargo-list">
+        <CargoList />
+      </section>
+      <section className="layout-pack-renderer">
         <ResultsDisplay />
       </section>
     </main>

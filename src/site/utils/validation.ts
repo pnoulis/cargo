@@ -143,6 +143,8 @@ export function parseContainerUpdate(name: string, value: unknown): TParseResult
       return { ...validateWeight(parsed), value: parsed };
     case "unit":
       return { valid: true, value };
+    case "name":
+      return { valid: true, name };
     case "clearance":
     default:
       throw new Error(`Trying to update unknown property: ${name}`);
@@ -178,6 +180,8 @@ export function parseCargoUpdate(name: string, value: unknown): TParseResult {
       if (!parsed) return { valid: true, value: 0 };
       return { ...validateQuantity(parsed), value: parsed };
     case "unit":
+      return { valid: true, value };
+    case "name":
       return { valid: true, value };
     default:
       throw new Error(`Trying to update unknown property: ${name}`);

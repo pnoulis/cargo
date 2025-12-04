@@ -6,12 +6,21 @@ import { createCargo } from "@common/cargo";
 import { Alert, useAlert } from "./Alert.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
 import { Button } from "./Button.tsx";
+import { usePacking } from "../context/PackingContext.tsx";
+
+function initializeForm() {
+  const cargo = createCargo();
+  cargo.quantity = 1;
+  return cargo;
+}
 
 export function CargoForm() {
-  const [cargo, setCargo] = React.useState(() => createCargo());
+  const { dispatchCreateCargoGroup } = usePacking();
+  const [cargo, setCargo] = React.useState(initializeForm);
   const [errors, setErrors] = React.useState({});
   const [allowSubmit, setAllowSubmit] = React.useState(false);
   const { emitAlert, alert } = useAlert();
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   function updateCargo(name: string, value: unknown): void {
     const result = parseCargoUpdate(name, value);
@@ -34,8 +43,11 @@ export function CargoForm() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    log(e);
     e.preventDefault();
+    dispatchCreateCargoGroup(structuredClone(cargo));
+    setCargo(initializeForm());
+    setAllowSubmit(false);
+    nameInputRef.current?.focus();
   }
 
   return (
@@ -43,7 +55,14 @@ export function CargoForm() {
       <Alert {...alert} />
       <form className="cargo-form" onSubmit={handleSubmit}>
         <div className="cargo-form-field name-input">
-          <input type="text" name="name" placeholder="Add Cargo item" />
+          <input
+            ref={nameInputRef}
+            type="text"
+            value={cargo.name || ""}
+            name="name"
+            placeholder="Add Cargo item"
+            onChange={(e) => updateCargo("name", e.target.value)}
+          />
         </div>
         <div className="cargo-form-field">
           <label>Length:</label>
@@ -110,7 +129,6 @@ export function CargoForm() {
           <NumberInput
             name="quantity"
             value={cargo.quantity}
-            placeholder="Optional"
             step="1"
             min="0"
             onChange={updateCargo}

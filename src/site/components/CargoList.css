@@ -1,34 +1,21 @@
-.cargo-list {
+.layout-cargo-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
   min-height: 0;
   flex: 1;
-}
-
-.cargo-list__container {
-  flex: 1;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
+  margin: 0;
+  padding: 0;
   overflow-y: auto;
-  min-height: 100px;
-  box-shadow: var(--shadow-sm);
 }
 
-.cargo-list__empty {
+.cargo-list-empty {
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  color: #999;
+  color: var(--color-neutral);
   font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
   text-align: center;
-}
-
-.cargo-list__items {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
 }

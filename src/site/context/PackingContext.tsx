@@ -15,6 +15,8 @@ export type TPackingContextType = {
   // Actions
   dispatchPackContainer: (container: TNewContainer) => void;
   dispatchAddCargoItem: (cargo: TNewCargo) => void;
+  dispatchCreateCargoGroup: (newCargo: TNewCargo) => void;
+  dispatchRemoveCargoGroup: (groupId: string) => void;
   resetAll: () => void;
   editContainer: () => void;
   exportPack: () => void;
@@ -25,21 +27,43 @@ export type TPackingContextType = {
 const PackingContext = React.createContext<TPackingContextType | null>(null);
 
 export function PackingProvider({ children }: { children: React.ReactNode }) {
-  const [cargoItems, setCargoItems] = React.useState([]);
+  const [cargoGroups, setCargoGroups] = React.useState([]);
   const [pack, setPack] = React.useState(null);
   const [isPacking, setIsPacking] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(true);
 
-  function dispatchPackContainer(container: TNewContainer) {
+  function dispatchPackContainer(newContainer: TNewContainer): void {
     log("dispatching pack container");
     const cargo = [];
-    for (let i = 0; i < cargoItems.length; i++) {
-      if (cargoItems[i].quantity > 1) cargo.push(...createCargo(cargoItems[i]));
-      else cargo.push(createCargo(cargoItems[i]));
+    for (let i = 0; i < cargoGroups.length; i++) {
+      cargo.push(...cargoGroups[i].cargo);
     }
-    const packedContainer = packContainer(createContainer(container), cargo);
+    const packedContainer = packContainer(createContainer(newContainer), cargo);
     setPack(packedContainer);
     setIsEditing(false);
+  }
+
+  function dispatchCreateCargoGroup(newCargo: TNewCargo): void {
+    log("dispatching create cargo group");
+    /* TODO: Check for cargo name duplicates */
+    const cargo = newCargo.quantity === 1 ? [createCargo(newCargo)] : createCargo(newCargo);
+    const cargoGroup = {
+      id: cargo[0].id /* Re-use the 1st cargo id as the group ID */,
+      quantity: cargo.length,
+      cargo: cargo,
+      pendingCargo: 1,
+      loadedCargo: 0,
+      failedCargo: 0,
+    };
+    setCargoGroups(cargoGroups.concat(cargoGroup));
+  }
+
+  function dispatchRemoveCargoGroup(groupId: string): void {
+    const i = cargoGroups.findIndex((cargoGroup) => cargoGroup.id === groupId);
+    if (i === 0) return setCargoGroups(cargoGroups.slice(1));
+    else if (i === cargoGroups.length) return setCargoGroups(cargoGroups.slice(0, -1));
+    else if (i !== -1)
+      return setCargoGroups(cargoGroups.slice(0, i).concat(cargoGroups.slice(i + 1)));
   }
 
   function dispatchAddCargoItem(cargo: TNewCargo) {}
@@ -59,7 +83,7 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
 
   const value: TPackingContextType = {
     /* State */
-    cargoItems,
+    cargoGroups,
     pack,
     isPacking,
     isEditing,
@@ -67,6 +91,8 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     /* Actions */
     dispatchPackContainer,
     dispatchAddCargoItem,
+    dispatchCreateCargoGroup,
+    dispatchRemoveCargoGroup,
     resetAll,
     editContainer,
     exportPack,

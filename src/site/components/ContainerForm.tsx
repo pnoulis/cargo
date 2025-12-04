@@ -47,7 +47,13 @@ export function ContainerForm() {
       <Alert {...alert} />
       <form className="container-form" onSubmit={handleSubmit}>
         <div className="container-form-field name-input">
-          <input type="text" name="name" placeholder="Container name" />
+          <input
+            type="text"
+            value={container.name}
+            name="name"
+            placeholder="Container name"
+            onChange={(e) => updateContainer("name", e.target.value)}
+          />
         </div>
         <div className="container-form-field">
           <label>Length:</label>
