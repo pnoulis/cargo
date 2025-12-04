@@ -1,5 +1,5 @@
 import { React } from "react";
-import { EUnit } from "@/utils/index.ts";
+import { EUnit } from "@common/utils/index.ts";
 import { usePacking } from "../context/PackingContext.tsx";
 import "./UnitSelector.css";
 

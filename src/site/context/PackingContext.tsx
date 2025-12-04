@@ -1,7 +1,7 @@
 import { React } from "react";
-import { TCargo, TNewCargo, createCargo } from "@/cargo";
-import { TContainer, TNewContainer, createContainer } from "@/container";
-import { TPack, TNewPack, createPack, packContainer } from "@/pack";
+import { TCargo, TNewCargo, createCargo } from "@common/cargo";
+import { TContainer, TNewContainer, createContainer } from "@common/container";
+import { TPack, TNewPack, createPack, packContainer } from "@common/pack";
 
 export type TPackingContextType = {
   // State

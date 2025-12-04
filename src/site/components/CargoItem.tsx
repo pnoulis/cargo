@@ -9,7 +9,7 @@ import {
 } from "../utils/validation.ts";
 import { NumberInput } from "./NumberInput.tsx";
 import "./CargoItem.css";
-import { createCargo } from '@/cargo.ts';
+import { createCargo } from '@common/cargo.ts';
 
 interface CargoItemProps {
   cargo: CargoInput;

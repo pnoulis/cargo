@@ -21,7 +21,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@common/*": ["./src/*"],
       "@meta/*": ["./src/meta/*"],
       "@site/*": ["./src/site/*"]
     }

@@ -2,7 +2,7 @@ import { React } from "react";
 import "./CargoForm.css";
 import { parseCargoUpdate } from "../utils/validation.ts";
 import { NumberInput } from "./NumberInput.tsx";
-import { createCargo } from "@/cargo";
+import { createCargo } from "@common/cargo";
 import { Alert, useAlert } from "./Alert.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
 import { Button } from "./Button.tsx";

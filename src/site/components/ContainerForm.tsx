@@ -3,7 +3,7 @@ import "./ContainerForm.css";
 import { parseContainerUpdate } from "../utils/validation.ts";
 import { NumberInput } from "./NumberInput.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
-import { createContainer } from "@/container.ts";
+import { createContainer } from "@common/container.ts";
 import { Alert, useAlert } from "./Alert.tsx";
 import { usePacking } from "../context/PackingContext.tsx";
 import { Button } from "./Button.tsx";
