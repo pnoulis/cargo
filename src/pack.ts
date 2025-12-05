@@ -106,7 +106,9 @@ export function removeCargo(pack: TPack, cargo: string): TCargo | null {
  * @returns the cargo that could not be loaded or null in case they all were
  */
 export function loadCargo(pack: TPack, ...cargo: TCargo[]): TCargo[] | null {
-  throw new Error("TODO: loadCargo");
+  pack.pendingCargo.push(...cargo);
+  loadFirstFitDecreasingCargo(pack, pack.pendingCargo, handleCargoLoad);
+  return pack;
 }
 
 /**

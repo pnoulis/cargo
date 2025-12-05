@@ -32,3 +32,7 @@ https://en.wikipedia.org/wiki/3D_projection
 ### Validation
 
 Test against regular expressions, then parse value.
+
+### Unit conversion
+
+Convert displayed cargo and container values according to user unit selection.

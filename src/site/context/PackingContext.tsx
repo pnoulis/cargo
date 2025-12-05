@@ -1,7 +1,7 @@
 import { React } from "react";
 import { TCargo, TNewCargo, createCargo } from "@common/cargo";
 import { TContainer, TNewContainer, createContainer } from "@common/container";
-import { TPack, TNewPack, createPack, packContainer } from "@common/pack";
+import { TPack, TNewPack, createPack, packContainer, loadCargo } from "@common/pack";
 
 export type TPackingContextType = {
   // State
@@ -16,7 +16,8 @@ export type TPackingContextType = {
   dispatchPackContainer: (container: TNewContainer) => void;
   dispatchAddCargoItem: (cargo: TNewCargo) => void;
   dispatchCreateCargoGroup: (newCargo: TNewCargo) => void;
-  dispatchRemoveCargoGroup: (groupId: string) => void;
+  dispatchRemoveCargo: (groupId: string) => void;
+  dispatchAddCargo: (groupId: string) => void;
   resetAll: () => void;
   editContainer: () => void;
   exportPack: () => void;
@@ -56,9 +57,15 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
       failedCargo: 0,
     };
     setCargoGroups(cargoGroups.concat(cargoGroup));
+
+    if (!pack) return;
+
+    loadCargo(pack, ...cargo);
+
+    log(pack);
   }
 
-  function dispatchRemoveCargoGroup(groupId: string): void {
+  function dispatchRemoveCargo(groupId: string): void {
     const i = cargoGroups.findIndex((cargoGroup) => cargoGroup.id === groupId);
     if (i === 0) return setCargoGroups(cargoGroups.slice(1));
     else if (i === cargoGroups.length) return setCargoGroups(cargoGroups.slice(0, -1));
@@ -66,10 +73,10 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
       return setCargoGroups(cargoGroups.slice(0, i).concat(cargoGroups.slice(i + 1)));
   }
 
-  function dispatchAddCargoItem(cargo: TNewCargo) {}
+  function dispatchAddCargo(groupId: string): void {}
 
   function resetAll() {
-    setCargoItems([]);
+    setCargoGroups([]);
     setPack(null);
     setIsPacking(false);
     setIsEditing(true);
@@ -90,9 +97,9 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
 
     /* Actions */
     dispatchPackContainer,
-    dispatchAddCargoItem,
     dispatchCreateCargoGroup,
-    dispatchRemoveCargoGroup,
+    dispatchAddCargo,
+    dispatchRemoveCargo,
     resetAll,
     editContainer,
     exportPack,

@@ -1,0 +1,15 @@
+.cube-svg {
+  width: 200px;
+  height: 200px;
+  opacity: 1;
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

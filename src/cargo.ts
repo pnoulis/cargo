@@ -35,7 +35,7 @@ export function createCargo(newCargo: TNewCargo): TCargo {
 
   while (newCargo.quantity-- > 0) {
     cargo.push({
-      id: newCargo.id || smallID(),
+      id: smallID(),
       name: newCargo.name,
       unit: newCargo.unit,
       priority: newCargo.priority || 0,

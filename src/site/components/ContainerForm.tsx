@@ -4,16 +4,20 @@ import { parseContainerUpdate } from "../utils/validation.ts";
 import { NumberInput } from "./NumberInput.tsx";
 import { UnitSelector } from "./UnitSelector.tsx";
 import { createContainer } from "@common/container.ts";
+import { TPack } from "@comman/pack.ts";
 import { Alert, useAlert } from "./Alert.tsx";
 import { usePacking } from "../context/PackingContext.tsx";
 import { Button } from "./Button.tsx";
 
+function initializeForm(pack: TPack) {
+  if (pack && pack.container) return { ...pack.container };
+  return createContainer({ maxWeight: 1000 });
+}
+
 export function ContainerForm() {
   const [errors, setErrors] = React.useState({});
   const { pack, dispatchPackContainer } = usePacking();
-  const [container, setContainer] = React.useState(() =>
-    pack?.container ? { ...pack?.container } : createContainer({ maxWeight: 1000 }),
-  );
+  const [container, setContainer] = React.useState(() => initializeForm(pack));
   const [allowSubmit, setAllowSubmit] = React.useState(pack?.container);
   const { emitAlert, alert } = useAlert();
 
@@ -39,6 +43,7 @@ export function ContainerForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
+    container.name ||= "Untitled container";
     dispatchPackContainer(container);
   }
 

@@ -20,6 +20,8 @@ ESLINT := $(NVM_BIN)/eslint
 NODEMON := $(NVM_BIN)/nodemon
 SERVER := $(NVM_BIN)/http-server
 
+export BUILDIR = $(SRCDIR_TOP)
+
 .PHONY: all
 all: build
 
