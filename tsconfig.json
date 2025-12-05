@@ -23,7 +23,8 @@
     "paths": {
       "@common/*": ["./src/*"],
       "@meta/*": ["./src/meta/*"],
-      "@site/*": ["./src/site/*"]
+      "@site/*": ["./src/site/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": ["./src/**/*.ts"],
