@@ -1,0 +1,28 @@
+/* Cargo state animations */
+
+.cargo-state-animation {
+}
+
+.cargo-state-animation.pending {
+  border: 5px solid var(--color-primary);
+  animation: cargo-flash-pending 1.5s ease-in-out infinite;
+}
+
+.cargo-state-animation.loaded {
+  border: 5px solid color-mix(in srgb, var(--color-success) 60%, transparent);
+}
+
+.cargo-state-animation.failed {
+  border: 5px solid color-mix(in srgb, var(--color-danger) 60%, transparent);
+}
+
+/* Pending state - primary color border flash */
+@keyframes cargo-flash-pending {
+  0%,
+  100% {
+    border-color: var(--color-primary);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+}

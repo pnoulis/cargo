@@ -1,5 +1,6 @@
 import { React } from "react";
 import "./PackController.css";
+import "./cargo-state-animation.css";
 import { usePacking } from "../context/PackingContext.tsx";
 import { Button } from "./Button.tsx";
 
@@ -7,7 +8,7 @@ export function PackController() {
   const { pack, resetAll, editContainer, exportPack } = usePacking();
 
   return (
-    <article key={pack.id} className="pack-panel">
+    <article key={pack.id} className={`pack-panel cargo-state-animation pending`}>
       <dl className="pack-panel-data">
         <div className="data-tuple">
           <dt>Name:</dt>

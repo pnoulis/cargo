@@ -16,7 +16,7 @@ function initializeForm(pack: TPack) {
 
 export function ContainerForm() {
   const [errors, setErrors] = React.useState({});
-  const { pack, dispatchPackContainer } = usePacking();
+  const { pack, dispatchCreatePack } = usePacking();
   const [container, setContainer] = React.useState(() => initializeForm(pack));
   const [allowSubmit, setAllowSubmit] = React.useState(pack?.container);
   const { emitAlert, alert } = useAlert();
@@ -44,7 +44,7 @@ export function ContainerForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     container.name ||= "Untitled container";
-    dispatchPackContainer(container);
+    dispatchCreatePack(container);
   }
 
   return (
@@ -115,7 +115,7 @@ export function ContainerForm() {
           style={{ gridColumn: 3, justifySelf: "end" }}
         />
         <Button className="container-form-submit" type="submit" disabled={!allowSubmit}>
-          Pack Container
+          Create container
         </Button>
       </form>
     </>

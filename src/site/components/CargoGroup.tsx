@@ -11,7 +11,7 @@ interface CargoItemProps {
 
 export function CargoGroup({ cargoGroup }: CargoItemProps) {
   const { dispatchRemoveCargo, dispatchAddCargo } = usePacking();
-  const cargo = cargoGroup.cargo[0];
+  const cargo = cargoGroup.cargo;
 
   return (
     <article className="cargo-group">
@@ -51,10 +51,10 @@ export function CargoGroup({ cargoGroup }: CargoItemProps) {
       </dl>
       <section className="cargo-group-controls">
         <Button type="button" onClick={() => dispatchRemoveCargo(cargoGroup.id)}>
-          Add
+          Remove
         </Button>
         <Button type="button" onClick={() => dispatchAddCargo(cargoGroup.id)}>
-          Remove
+          Add
         </Button>
       </section>
     </article>

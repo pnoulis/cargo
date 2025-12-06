@@ -36,3 +36,5 @@ Test against regular expressions, then parse value.
 ### Unit conversion
 
 Convert displayed cargo and container values according to user unit selection.
+
+### DONE Make the packing and rendering of a pack independent of UI renders

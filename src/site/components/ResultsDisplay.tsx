@@ -5,15 +5,15 @@ import { usePacking } from "../context/PackingContext.tsx";
 import { renderPack } from "@common/render";
 
 export function ResultsDisplay() {
-  const { pack, cargoGroups } = usePacking();
+  const { pack } = usePacking();
 
   React.useEffect(() => {
-    if (!cargoGroups.length) return;
-    log(pack);
-    renderPack(pack);
-  }, [cargoGroups]);
+    if (!pack?.loadedCargo.length) return;
+    log("will render pack");
+    /* renderPack(pack); */
+  }, [pack?.id || ""]);
 
-  if (!pack) {
+  if (!(pack && pack.loadedCargo.length)) {
     return (
       <div className="results-display results-display--empty">
         <img src={cubeSvg} alt="Empty state cube" className="cube-svg" />

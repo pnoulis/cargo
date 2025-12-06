@@ -21,11 +21,6 @@
   outline: none;
 }
 
-.button:focus:not(:disabled) {
-  background-color: #1e40af;
-  outline: none;
-}
-
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;

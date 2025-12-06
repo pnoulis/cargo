@@ -1,4 +1,4 @@
-import { TPackedCargo } from "./pack.ts";
+import { TCargo } from "./cargo.ts";
 
 export enum ECargoState {
   Pending = "pending",
@@ -6,14 +6,10 @@ export enum ECargoState {
   Failed = "failed",
 }
 
-type TClientCargo = TPackedCargo & {
-  state: ECargoState;
-};
-
 export type TCargoGroup = {
   id: string;
   quantity: number;
-  cargo: TClientCargo[];
+  cargo: TCargo;
   pendingCargo: number;
   loadedCargo: number;
   failedCargo: number;

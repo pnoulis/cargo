@@ -44,6 +44,7 @@ export function CargoForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
+    cargo.name ||= "Untitled cargo";
     dispatchCreateCargoGroup(structuredClone(cargo));
     setCargo(initializeForm());
     setAllowSubmit(false);
