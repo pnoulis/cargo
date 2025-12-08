@@ -2,6 +2,7 @@ import { React } from "react";
 import "./NumberInput.css";
 
 interface NumberInputProps {
+  ref: React.Ref<HTMLInputElement>;
   name: string;
   value: string | number;
   onChange: (name: string, value: string) => void;
@@ -14,6 +15,7 @@ interface NumberInputProps {
 }
 
 export function NumberInput({
+  ref,
   name,
   value,
   onChange,
@@ -39,6 +41,7 @@ export function NumberInput({
   return (
     <div className={`number-input ${error ? "error" : ""} ${className}`}>
       <input
+        ref={ref}
         name={name}
         value={value || ""}
         type="number"

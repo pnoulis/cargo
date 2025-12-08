@@ -1,0 +1,39 @@
+.export-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.export-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  height: var(--button-height);
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.export-link:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.export-link:active {
+  background-color: #1e40af;
+}
+
+.export-link::after {
+  content: "↓";
+  font-size: 1.2em;
+  line-height: 1;
+}

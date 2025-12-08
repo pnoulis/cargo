@@ -1,11 +1,6 @@
 import { TCargo, rotateCargo } from "../cargo.ts";
 import { TPack, TPackedCargo, fitsWithinPack } from "../pack.ts";
-import {
-  createBoundingBox,
-  isColliding,
-  isBound,
-  EPosition,
-} from "../geometry.ts";
+import { createBoundingBox, isColliding, isBound, EPosition } from "../geometry.ts";
 import type { TOnCargoLoad } from "./onCargoLoad.ts";
 
 // https://en.wikipedia.org/wiki/First-fit_bin_packing
@@ -23,15 +18,12 @@ export function loadFirstFitDecreasingCargo(
     do {
       if (
         tryLoading(pack, pack.loadedCargo[y], sortedCargo[i], onLoad) ||
-        tryLoading(
-          pack,
-          pack.loadedCargo[y],
-          rotateCargo(sortedCargo[i]),
-          onLoad,
-        )
+        tryLoading(pack, pack.loadedCargo[y], rotateCargo(sortedCargo[i]), onLoad)
       ) {
         pack.loadedCargo.push(sortedCargo[i] as TPackedCargo);
         pack.remainderVolume -= sortedCargo[i].volume;
+        pack.remainderVolume = pack.remainderVolume.toPrecision(3);
+
         pendingCargo.splice(
           pendingCargo.findIndex((cargo) => cargo.id === sortedCargo[i].id),
           1,
@@ -59,10 +51,7 @@ function tryLoading(
   candidate.x = base.x;
   candidate.y = base.y;
   candidate.z = base.z + base.h;
-  if (
-    isBound(pack.container, candidate) &&
-    isPositionAvailable(pack.loadedCargo, candidate)
-  ) {
+  if (isBound(pack.container, candidate) && isPositionAvailable(pack.loadedCargo, candidate)) {
     return onLoad(pack, base, candidate as TPackedCargo, EPosition.top);
   }
 
@@ -70,10 +59,7 @@ function tryLoading(
   candidate.x = base.x;
   candidate.y = base.y + base.w;
   candidate.z = base.z;
-  if (
-    isBound(pack.container, candidate) &&
-    isPositionAvailable(pack.loadedCargo, candidate)
-  ) {
+  if (isBound(pack.container, candidate) && isPositionAvailable(pack.loadedCargo, candidate)) {
     return onLoad(pack, base, candidate as TPackedCargo, EPosition.side);
   }
 
@@ -81,20 +67,14 @@ function tryLoading(
   candidate.x = base.x + base.l;
   candidate.y = base.y;
   candidate.z = base.z;
-  if (
-    isBound(pack.container, candidate) &&
-    isPositionAvailable(pack.loadedCargo, candidate)
-  ) {
+  if (isBound(pack.container, candidate) && isPositionAvailable(pack.loadedCargo, candidate)) {
     return onLoad(pack, base, candidate as TPackedCargo, EPosition.front);
   }
 
   return null;
 }
 
-function isPositionAvailable(
-  loadedCargo: TCargo[],
-  candidate: TCargo,
-): boolean {
+function isPositionAvailable(loadedCargo: TCargo[], candidate: TCargo): boolean {
   for (let i = 0; i < loadedCargo.length; i++)
     if (isColliding(loadedCargo[i], candidate)) return false;
   return true;

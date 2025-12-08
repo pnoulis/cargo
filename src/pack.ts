@@ -37,6 +37,7 @@ export type TPack = {
   remainderVolume: number;
   pendingCargo: TCargo[];
   loadedCargo: TPackedCargo[];
+  failedCargo: TPackedCargo[];
   grids: TGrid[];
   minCargoL: number;
   minCargoW: number;
@@ -60,6 +61,7 @@ export function createPack(newPack: TNewPack): TPack {
     remainderVolume: newPack.container.volume,
     pendingCargo: newPack.cargo || [],
     loadedCargo: [],
+    failedCargo: [],
     grids: [],
     minCargoL: Number.POSITIVE_INFINITY,
     minCargoW: Number.POSITIVE_INFINITY,
@@ -119,9 +121,9 @@ export function unloadCargo(pack: TPack, cargo: string): TCargo | null {
 }
 
 /* The power of the english language in the palm of my hand */
-export function packPack(pack: TPack): TPack {
-  loadFirstFitDecreasingCargo(pack, pack.pendingCargo, handleCargoLoad);
-  return pack;
+export function packPack(pack: TPack): TCargo[] {
+  const failedCargo = loadFirstFitDecreasingCargo(pack, pack.pendingCargo, handleCargoLoad);
+  return failedCargo;
 }
 
 export function packContainer(container: TContainer, cargo: TCargo[]): TPack {

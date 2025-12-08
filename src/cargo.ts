@@ -16,6 +16,7 @@ export type TCargo = TBody & {
   id: string;
   name?: string;
   priority: number;
+  cargoGroup: string;
 };
 
 export type TNewCargo = TDimensions &
@@ -35,19 +36,29 @@ export function createCargo(newCargo: TNewCargo): TCargo {
 
   while (newCargo.quantity-- > 0) {
     cargo.push({
-      id: smallID(),
+      /* TCargoGroup */
+      cargoGroup: newCargo.cargoGroup || "",
+
+      /* TCargo */
+      id: newCargo.quantity === 1 ? newCargo.id || smallID() : smallID(),
       name: newCargo.name,
-      unit: newCargo.unit,
       priority: newCargo.priority || 0,
+
+      /* TBody */
+      unit: newCargo.unit,
       volume: calculateVolume(newCargo, newCargo.unit),
       weight: newCargo.weight || 0,
+
+      /* TOrientation */
       /* Constrain orientation to axis */
       yaw: newCargo.orientation || ECargoOrientation.parallel,
-      /* Position */
-      x: newCargo.x || 0,
-      y: newCargo.y || 0,
-      z: newCargo.z || 0,
-      /* Dimensions (l,w,h) */
+
+      /* T3DCoordinates */
+      x: 0,
+      y: 0,
+      z: 0,
+
+      /* TDimensions */
       ...normalizeDimensions(newCargo),
     });
   }

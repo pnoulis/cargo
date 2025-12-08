@@ -1,0 +1,63 @@
+.canvas-tabbed-ui {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.canvas-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  border-bottom: 2px solid var(--color-border);
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg);
+  z-index: 10;
+}
+
+.canvas-tab {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: none;
+  border: 3px solid transparent;
+  border-radius:  var(--border-radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: var(--color-neutral-600);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.canvas-tab:hover {
+  color: var(--color-neutral);
+  border-color: var(--color-primary);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.canvas-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.canvas-list {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-md);
+}
+
+.canvas-item {
+  display: none;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.canvas-item.active {
+  display: block;
+}

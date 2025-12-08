@@ -6,8 +6,8 @@ import { TContainer, createContainer } from "./container.ts";
 import { packContainer, TPack, EGrid, TPackedCargo } from "./pack.ts";
 import { EUnit } from "./utils/index.ts";
 
-function createCanvas(width: number, height: number): HTMLCanvasElement {
-  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+function createCanvas(width: number, height: number, gridIndex: number): HTMLCanvasElement {
+  const canvas = document.getElementById(`canvas-${gridIndex}`) as HTMLCanvasElement;
   canvas.width = width;
   canvas.height = height;
   return canvas;
@@ -46,6 +46,7 @@ const ROW_GAP = 5;
 const MIN_CANVAS_HEIGHT = 2000;
 const MIN_CANVAS_WIDTH = 2000;
 const FONT_SIZE = 20;
+const ID_COLUMN = 400;
 
 export function renderPack(pack: TPack, flow: ERenderColumnFlow) {
   const gridCount = pack.grids.length;
@@ -65,17 +66,27 @@ export function renderPack(pack: TPack, flow: ERenderColumnFlow) {
     if (MIN_CANVAS_HEIGHT > canvasHeight) canvasHeight = MIN_CANVAS_HEIGHT;
   }
 
-  const canvas = createCanvas(canvasWidth + CANVAS_PADDING_X, canvasHeight + CANVAS_PADDING_Y);
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, canvasWidth + CANVAS_PADDING_X, canvasHeight + CANVAS_PADDING_Y);
-  ctx.strokeStyle = "black";
-  ctx.font = FONT_SIZE * SCALE + "px Arial"; // font size + family
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = "black";
+  const canvases = pack.grids.map((grid, i) => {
+    const canvas = createCanvas(
+      canvasWidth + CANVAS_PADDING_X + ID_COLUMN,
+      canvasHeight + CANVAS_PADDING_Y,
+      i,
+    );
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvasWidth + CANVAS_PADDING_X + ID_COLUMN, canvasHeight + CANVAS_PADDING_Y);
+    ctx.strokeStyle = "black";
+    ctx.font = FONT_SIZE * SCALE + "px Arial"; // font size + family
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "black";
+    return ctx;
+  });
 
   let x, y, w, h;
+  let ids = pack.grids.map((grid) => 0);
   for (const cargo of pack.loadedCargo) {
+    const ctx = canvases[cargo.grid[EGrid.index]];
+
     x = getCargoXStart(cargo, flow, pack);
     w = getCargoXEnd(cargo);
     y = getCargoYStart(cargo, flow, pack);
@@ -85,11 +96,18 @@ export function renderPack(pack: TPack, flow: ERenderColumnFlow) {
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = "black";
     ctx.fillText(cargo.id, x + TEXT_OFFSET * SCALE, y + h / 2);
+
+    ctx.fillText(
+      `${cargo.id}: ${cargo.name || "Untitled"}`,
+      5,
+      20 + ids[cargo.grid[EGrid.index]] * 45,
+    );
+    ids[cargo.grid[EGrid.index]]++;
   }
 
   function getCargoXStart(cargo: TPackedCargo, flow: ERenderColumnFlow, pack: TPack): number {
     let x = cargo.y * minWidthScale * SCALE;
-    x += CANVAS_PADDING_X;
+    x += CANVAS_PADDING_X + ID_COLUMN;
     return Math.trunc(x);
   }
 
@@ -101,7 +119,7 @@ export function renderPack(pack: TPack, flow: ERenderColumnFlow) {
 
   function getCargoYStart(cargo: TPackedCargo, flow: ERenderColumnFlow, pack: TPack): number {
     let y = cargo.x * minWidthScale * SCALE;
-    y += cargo.grid[EGrid.index] * packLength;
+    // y += cargo.grid[EGrid.index] * packLength;
     y += CANVAS_PADDING_Y;
     return Math.trunc(y);
   }

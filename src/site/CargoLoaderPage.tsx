@@ -4,7 +4,7 @@ import { ContainerForm } from "./components/ContainerForm.tsx";
 import { CargoForm } from "./components/CargoForm.tsx";
 import { PackController } from "./components/PackController.tsx";
 import { usePacking, PackingProvider } from "./context/PackingContext.tsx";
-import { ResultsDisplay } from "./components/ResultsDisplay.tsx";
+import { CanvasLayout } from "./components/CanvasLayout.tsx";
 import { CargoList } from "./components/CargoList.tsx";
 
 export function CargoLoaderPage() {
@@ -30,7 +30,7 @@ function CargoLoader() {
         <CargoList />
       </section>
       <section className="layout-pack-renderer">
-        <ResultsDisplay />
+        <CanvasLayout />
       </section>
     </main>
   );

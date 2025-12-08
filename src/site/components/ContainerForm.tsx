@@ -16,10 +16,11 @@ function initializeForm(pack: TPack) {
 
 export function ContainerForm() {
   const [errors, setErrors] = React.useState({});
-  const { pack, dispatchCreatePack } = usePacking();
+  const { pack, dispatchCreatePack, isEditing } = usePacking();
   const [container, setContainer] = React.useState(() => initializeForm(pack));
   const [allowSubmit, setAllowSubmit] = React.useState(pack?.container);
   const { emitAlert, alert } = useAlert();
+  const lengthInputRef = React.useRef<HTMLInputElement>(null);
 
   function updateContainer(name: string, value: unknown): void {
     const result = parseContainerUpdate(name, value);
@@ -47,6 +48,10 @@ export function ContainerForm() {
     dispatchCreatePack(container);
   }
 
+  React.useEffect(() => {
+    if (isEditing) lengthInputRef.current?.focus();
+  }, [isEditing]);
+
   return (
     <>
       <Alert {...alert} />
@@ -63,6 +68,7 @@ export function ContainerForm() {
         <div className="container-form-field">
           <label>Length:</label>
           <NumberInput
+            ref={lengthInputRef}
             name="l"
             value={container.l}
             placeholder="0"

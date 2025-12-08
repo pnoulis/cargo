@@ -15,12 +15,12 @@ function initializeForm() {
 }
 
 export function CargoForm() {
-  const { dispatchCreateCargoGroup } = usePacking();
+  const { dispatchCreateCargoGroup, isEditing } = usePacking();
   const [cargo, setCargo] = React.useState(initializeForm);
   const [errors, setErrors] = React.useState({});
   const [allowSubmit, setAllowSubmit] = React.useState(false);
   const { emitAlert, alert } = useAlert();
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
+  const lengthInputRef = React.useRef<HTMLInputElement>(null);
 
   function updateCargo(name: string, value: unknown): void {
     const result = parseCargoUpdate(name, value);
@@ -48,8 +48,12 @@ export function CargoForm() {
     dispatchCreateCargoGroup(structuredClone(cargo));
     setCargo(initializeForm());
     setAllowSubmit(false);
-    nameInputRef.current?.focus();
+    lengthInputRef.current?.focus();
   }
+
+  React.useEffect(() => {
+    if (!isEditing) lengthInputRef.current?.focus();
+  }, [isEditing]);
 
   return (
     <>
@@ -57,7 +61,6 @@ export function CargoForm() {
       <form className="cargo-form" onSubmit={handleSubmit}>
         <div className="cargo-form-field name-input">
           <input
-            ref={nameInputRef}
             type="text"
             value={cargo.name || ""}
             name="name"
@@ -68,6 +71,7 @@ export function CargoForm() {
         <div className="cargo-form-field">
           <label>Length:</label>
           <NumberInput
+            ref={lengthInputRef}
             name="l"
             value={cargo.l}
             placeholder="0"

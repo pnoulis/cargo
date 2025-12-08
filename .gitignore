@@ -6,3 +6,7 @@ scratch.*
 *.log
 out.*
 .claude
+
+/* In vim the command `:w` saves a file. Sometimes, due to typing speed and
+wrong key presses I create a file instead of saving it. */
+:w

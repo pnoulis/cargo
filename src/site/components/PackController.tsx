@@ -5,10 +5,10 @@ import { usePacking } from "../context/PackingContext.tsx";
 import { Button } from "./Button.tsx";
 
 export function PackController() {
-  const { pack, resetAll, editContainer, exportPack } = usePacking();
+  const { pack, resetAll, editContainer, exportPack, dispatchPackPack } = usePacking();
 
   return (
-    <article key={pack.id} className={`pack-panel cargo-state-animation pending`}>
+    <article key={pack.id} className={`pack-panel cargo-state-animation`}>
       <dl className="pack-panel-data">
         <div className="data-tuple">
           <dt>Name:</dt>
@@ -64,6 +64,9 @@ export function PackController() {
         </Button>
         <Button type="button" onClick={exportPack}>
           Export
+        </Button>
+        <Button type="button" onClick={dispatchPackPack}>
+          Pack
         </Button>
       </section>
     </article>

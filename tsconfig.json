@@ -5,6 +5,7 @@
     "target": "es2024",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "sourceMap": false,
     "declaration": false,
     "declarationMap": false,
@@ -21,12 +22,12 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@common/*": ["./src/*"],
-      "@meta/*": ["./src/meta/*"],
-      "@site/*": ["./src/site/*"],
-      "@assets/*": ["./assets/*"]
+      "@common/*": ["src/*"],
+      "@meta/*": ["src/meta/*"],
+      "@site/*": ["src/site/*"],
+      "@assets/*": ["assets/*"]
     }
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/vendor.ts", "node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/vendor.ts", "node_modules", ".git"]
 }

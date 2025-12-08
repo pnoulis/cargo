@@ -4,6 +4,7 @@ import { TContainer, TNewContainer, createContainer } from "@common/container";
 import { TPack, TNewPack, createPack, loadCargo, unloadCargo, packPack } from "@common/pack";
 import { useThrottle, useThrottledValue } from "../utils/useThrottle.tsx";
 import { TCargoGroup, ECargoState } from "@common/clients";
+import { smallID } from "@common/utils";
 
 export type TPackingContextType = {
   // State
@@ -11,6 +12,8 @@ export type TPackingContextType = {
   cargoItems: TNewCargo[];
   isPacking: boolean;
   isEditing: boolean;
+  isPacked: boolean;
+  isExporting: boolean;
 
   // Actions
   resetAll: () => void;
@@ -20,16 +23,19 @@ export type TPackingContextType = {
   dispatchCreateCargoGroup: (newCargo: TNewCargo) => void;
   dispatchRemoveCargo: (groupId: string) => void;
   dispatchAddCargo: (groupId: string) => void;
+  dispatchPackPack: () => void;
 };
 
 const PackingContext = React.createContext<TPackingContextType | null>(null);
 
 export function PackingProvider({ children }: { children: React.ReactNode }) {
-  const [pack, setPack] = React.useState(createPack(createContainer()));
+  const [pack, setPack] = React.useState();
   const [cargoGroups, setCargoGroups] = React.useState([]);
   const [isPacking, setIsPacking] = React.useState(false);
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(true);
   const [packArgs, setPackArgs] = useThrottledValue(5000);
+  const [isExporting, setIsExporting] = React.useState(false);
+  const [isPacked, setIsPacked] = React.useState(false);
 
   React.useEffect(() => {
     log("pack args changed");
@@ -47,38 +53,42 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     setIsEditing(true);
   }
 
-  function exportPack() {}
+  async function exportPack() {
+    if (!pack) return;
+    setIsExporting(true);
+  }
 
   function dispatchCreatePack(newContainer: TNewContainer): void {
     log("dispatching create pack");
-    const cargo = [];
-    for (let i = 0; i < cargoGroups.length; i++) {
-      cargo.push(...cargoGroups[i].cargo);
-    }
     const container = createContainer(newContainer);
-    const pack = createPack({ container, cargo });
+    const pack = createPack({ container });
 
+    if (cargoGroups.length) {
+      for (let i = 0; i < cargoGroups.length; i++) {
+        pack.pendingCargo.push(cargoGroups[i].cargo);
+        for (let y = 1; y < cargoGroups[i].quantity; y++) {
+          pack.pendingCargo.push(createCargo({ ...cargoGroups[i].cargo, id: "" }));
+        }
+      }
+    }
     // Render UI
     setPack(pack);
     setIsEditing(false);
-
-    if (!cargo.length) return;
-
-    // Pack pack
-    setPackArgs(pack, packPack);
   }
 
   function dispatchCreateCargoGroup(newCargo: TNewCargo): void {
     log("dispatching create cargo group");
     /* TODO: Check for cargo name duplicates */
-    const cargo = newCargo.quantity === 1 ? [createCargo(newCargo)] : createCargo(newCargo);
+
+    const cargoGroupId = smallID();
+    const cargo = createCargo({ ...newCargo, cargoGroup: cargoGroupId, quantity: 1 });
 
     const cargoGroup = {
-      id: cargo[0].id /* Re-use the 1st cargo id as the group ID */,
-      quantity: cargo.length,
-      cargo: cargo[0],
+      id: cargoGroupId,
+      quantity: newCargo.quantity,
+      cargo: cargo,
       state: ECargoState.Pending,
-      pendingCargo: cargo.length,
+      pendingCargo: newCargo.quantity,
       loadedCargo: 0,
       failedCargo: 0,
     };
@@ -89,8 +99,11 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     if (!pack) return;
 
     // Load cargo
-    setPackArgs(pack, loadCargo, cargoGroup, cargo.length);
-    setIsPacking(true);
+    pack.pendingCargo.push(cargo);
+    for (let i = 1; i < newCargo.quantity; i++) {
+      pack.pendingCargo.push(createCargo({ ...cargo, id: "" }));
+    }
+    setPack({ ...pack });
   }
 
   function dispatchRemoveCargo(groupId: string): void {
@@ -101,9 +114,21 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     cargoGroups[i].quantity--;
     cargoGroups[i].state = ECargoState.Pending;
 
-    // Unload cargo
-    setPackArgs(pack, unloadCargo, cargoGroups[i], 1);
-    setIsPacking(true);
+    if (pack) {
+      let y = pack.loadedCargo.findIndex((c) => c.cargoGroup === cargoGroups[i].id);
+      if (y > -1) {
+        pack.loadedCargo.splice(y, 1);
+      } else {
+        y = pack.pendingCargo.findIndex((c) => c.cargoGroup === cargoGroups[i].id);
+        if (y > -1) {
+          pack.pendingCargo.splice(y, 1);
+        } else {
+          y = pack.failedCargo.findIndex((c) => c.cargoGroup === cargoGroups[i].id);
+          pack.failedCargo.splice(y, 1);
+        }
+      }
+      setPack({ ...pack });
+    }
 
     // Set cargo groups
     if (cargoGroups[i].quantity > 0) return setCargoGroups([...cargoGroups]);
@@ -124,12 +149,20 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     cargoGroups[i].pendingCargo++;
     cargoGroups[i].state = ECargoState.Pending;
 
-    // Load cargo
-    setPackArgs(pack, loadCargo, cargoGroups[i], 1);
-    setIsPacking(true);
-
     // Set cargo groups
     setCargoGroups([...cargoGroups]);
+
+    if (!pack) return;
+    pack.pendingCargo.push(createCargo({ ...cargoGroups[i].cargo, id: "" }));
+    setPack({ ...pack });
+  }
+
+  function dispatchPackPack(): void {
+    log("dispatching pack pack");
+    log(pack);
+    const failedCargo = packPack(pack);
+    setPack({ ...pack });
+    setIsPacked(true);
   }
 
   const value: TPackingContextType = {
@@ -138,6 +171,8 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     cargoGroups,
     isPacking,
     isEditing,
+    isExporting,
+    isPacked,
 
     /* Actions */
     resetAll,
@@ -147,6 +182,7 @@ export function PackingProvider({ children }: { children: React.ReactNode }) {
     dispatchCreateCargoGroup,
     dispatchAddCargo,
     dispatchRemoveCargo,
+    dispatchPackPack,
   };
 
   return <PackingContext.Provider value={value}>{children}</PackingContext.Provider>;
