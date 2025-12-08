@@ -6,12 +6,13 @@ import { renderPack } from "@common/render";
 
 export function ResultsDisplay() {
   const { pack } = usePacking();
+  const [activeTab, setActiveTab] = React.useState(0);
 
   React.useEffect(() => {
     if (!pack?.loadedCargo.length) return;
     log("will render pack");
-    /* renderPack(pack); */
-  }, [pack?.id || ""]);
+    renderPack(pack);
+  }, [pack]);
 
   if (!(pack && pack.loadedCargo.length)) {
     return (
@@ -23,7 +24,27 @@ export function ResultsDisplay() {
 
   return (
     <div id="layout-canvas">
-      <canvas id="canvas">yolo</canvas>
+      <div className="canvas-tabs">
+        {pack.grids.map((_, i) => (
+          <button
+            key={i}
+            className={`canvas-tab ${activeTab === i ? "canvas-tab--active" : ""}`}
+            onClick={() => setActiveTab(i)}
+          >
+            Level {i}
+          </button>
+        ))}
+      </div>
+      <div className="canvas-container">
+        {pack.grids.map((_, i) => (
+          <canvas
+            key={i}
+            id={`canvas-${i}`}
+            className={`canvas-view ${activeTab === i ? "canvas-view--active" : ""}`}
+          />
+        ))}
+      </div>
     </div>
   );
+
 }

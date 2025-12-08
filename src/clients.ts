@@ -10,6 +10,7 @@ export type TCargoGroup = {
   id: string;
   quantity: number;
   cargo: TCargo;
+  state: ECargoState;
   pendingCargo: number;
   loadedCargo: number;
   failedCargo: number;

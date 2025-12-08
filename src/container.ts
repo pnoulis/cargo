@@ -28,19 +28,23 @@ export function createContainer(newContainer: TNewContainer): TContainer {
   newContainer = { unit: EUnit.Centimeter, ...newContainer };
 
   return {
+    /* TContainer */
     id: newContainer.id || smallID(),
     name: newContainer.name,
+    maxWeight: newContainer.maxWeight || Number.POSITIVE_INFINITY,
+    clearance: { x: 0, y: 0, z: 0, ...newContainer.clearance },
+
+    /* TBody */
     unit: newContainer.unit,
     volume: calculateVolume(newContainer, newContainer.unit),
     weight: newContainer.weight || 0,
-    maxWeight: newContainer.maxWeight || Number.POSITIVE_INFINITY,
-    /* Clearance */
-    clearance: { x: 0, y: 0, z: 0, ...newContainer.clearance },
-    /* Position */
-    x: newContainer.x || 0,
-    y: newContainer.y || 0,
-    z: newContainer.z || 0,
-    /* Dimensions (l,w,h) */
+
+    /* T3DCoordinates */
+    x: 0,
+    y: 0,
+    z: 0,
+
+    /* TDimensions */
     ...normalizeDimensions(newContainer),
   };
 }
